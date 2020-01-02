@@ -1,13 +1,14 @@
 public enum Platform {
-    NINTENDO("Nintendo"), PC("PC"), PLAYSTATION("Playstation"), XBOX("Xbox");
-    
-    private String console;
-    
-    private Platform(String console) {
-        this.console = console;
+    NINTENDO("Nintendo"), PC("Pc"), PLAYSTATION("PlayStation"), XBOX("Xbox");
+
+    private String platformName;
+
+    private Platform(String plateformName) {
+        this.platformName = plateformName;
     }
-    
+
+    @Override
     public String toString() {
-        return console;
+        return platformName;
     }
 }

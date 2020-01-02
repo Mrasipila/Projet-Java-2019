@@ -1,20 +1,40 @@
 import java.util.UUID;
 import java.util.List;
 
-public abstract class Product {
-    private String name;
-    private double price;
-    private UUID identifier;
-    private int stock;
-    private String image;
+public class Product {
+    protected String name;
+    protected double price;
+    protected UUID identifier;
+    protected int stock;
+    protected String image;
 
-    public Product() {
-
+    public Product(String name, double price, UUID identifier, int stock, String image) {
+        this.name       = name;
+        this.price      = price;
+        this.identifier = identifier;
+        this.stock      = stock;
+        this.image      = image;
     }
 
-    public List<Product> getProducts(String xmlPath) {
-        List<Product> allProducts = new List<Product>();
-        
-        return allProducts;
+    public String getName() {
+        return name;
     }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public UUID getID() {
+        return identifier;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void printProduct() {}
 }

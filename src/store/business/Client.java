@@ -7,13 +7,14 @@ public class Client {
     private String address;
     private UUID uniqueID;
 
-    public Client() {
-
+    public Client(String firstname, String lastname, String adresse, UUID uniqueID) {
+        this.firstName = firstname;
+        this.lastName  = lastname;
+        this.address   = adresse;
+        this.uniqueID  = uniqueID;
     }
 
-    public List<Client> getClients(String xmlPath) {
-        List<Client> allClient = new List<Client>();
+    public Client() {
         
-        return allClient;
     }
 }

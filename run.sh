@@ -1,1 +1,1 @@
-java -classpath bin Store
+java -classpath bin StoreGUI

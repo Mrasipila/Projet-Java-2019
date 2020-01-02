@@ -8,12 +8,10 @@ public class Transaction {
     private int numProducts;
     private Timestamp time;
 
-    public Transaction() {
-
-    }
-
-    public List<Transaction> getTransactions(String xmlPath) {
-        List<Transaction> allTransations = new List<Transaction>();
-        return allTransations;
+    public Transaction(UUID clientID, UUID productID, int numProducts, Timestamp time) {
+        this.clientID = clientID;
+        this.productID = productID;
+        this.numProducts = numProducts;
+        this.time = time;
     }
 }

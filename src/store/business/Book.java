@@ -1,13 +1,39 @@
-public class Book extends Product {
+import java.util.UUID;
 
+public class Book extends Product {
     private String author;
     private int pages;
-    private Language language;
+    private String language;
 
-    public Book(int pages, String author, double price, String name) {
-        this.pages = pages;
-        this.author = author;
-        this.price = price;
-        this.name = name;
+    public Book(String name, double price, UUID identifier, int stock, String image, String author, int pages, String language) {
+        super(name, price, identifier, stock, image);
+        this.author   = author;
+        this.pages    = pages;
+        this.language = language;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void printProduct() {
+        System.out.println("Type     : BOOK");
+        System.out.println("nom      : " + name);
+        System.out.println("price    : " + price);
+        System.out.println("uniqueID : " + identifier);
+        System.out.println("stock    : " + stock);
+        System.out.println("image    : " + image);
+        System.out.println("author   : " + author);
+        System.out.println("pages    : " + pages);
+        System.out.println("langage  : " + language);
+        System.out.println();
     }
 }

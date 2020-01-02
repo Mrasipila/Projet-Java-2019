@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<repertoire>
+
+ <livre>
+	<identifier>1</identifier>
+	<nom_livre>Hunger Games</nom_livre>
+	<author>Suzanne Collins</author>
+	<pages>374</pages>
+	<language>Français</language>
+	<price money="euros">15.99</price>
+	<stock>35</stock>
+	<image>/bin/usr/Desktop</image>
+ </livre>
+
+ <livre>
+	<identifier>2</identifier>
+	<nom_livre>Harry Potter à l'école des sorciers</nom_livre>
+	<author>J. K. Rowling</author>
+	<pages>232</pages>
+	<language>Anglais</language>
+	<price money="euros">19.95</price>
+	<stock>91</stock>
+	<image>/bin/usr/Desktop</image>
+ </livre>
+
+ <livre>
+	<identifier>3</identifier>
+	<nom_livre>Eragon</nom_livre>
+	<author>Christopher Paolini</author>
+	<pages>694</pages>
+	<language>Français</language>
+	<price money="euros">18.98</price>
+	<stock>12</stock>
+	<image>/bin/usr/Desktop</image>
+ </livre>
+
+ <DVD>
+	<identifier>20</identifier>
+	<nom_DVD>Men In Black</nom_DVD>
+	<actors>Will Smith, Tommy Lee Jones</actors>
+	<duration>98</duration>
+	<genre>Science-Fiction</genre>
+	<price money="euros">10</price>
+	<stock>62</stock>
+	<image>/bin/usr/Desktop</image>
+ </DVD>
+
+ <DVD>
+	<identifier>21</identifier>
+	<nom_DVD>Le Seigneur des anneaux : La Communauté de l'anneau</nom_DVD>
+	<actors>Elijah Wood, Ian McKellen, Orlando Bloom, Viggo Mortensen</actors>
+	<duration>178</duration>
+	<genre>Fantasy</genre>
+	<price money="euros">12.90</price>
+	<stock>25</stock>
+	<image>/bin/usr/Desktop</image>
+ </DVD>
+
+ <DVD>
+	<identifier>22</identifier>
+	<nom_DVD>Interstellar</nom_DVD>
+	<actors>Matthew McConaughey, Anne Hathaway, Micheal Caine, Jessica Chastain, Casey Affleck</actors>
+	<duration>169</duration>
+	<genre>Science-Fiction</genre>
+	<price money="euros">14.99</price>
+	<stock>70</stock>
+	<image>/bin/usr/Desktop</image>
+ </DVD>
+
+ <game>
+	<identifier>30</identifier>
+	<nom_jeu>Star Wars Jedi: Fallen Order</nom_jeu>
+	<genre>Action-Aventure</genre>
+	<platform>Pc, Xbox One, PS4</platform>
+	<price money="euros">64.99</price>
+	<stock>51</stock>
+	<image>/bin/usr/Desktop</image>
+ </game>
+
+ <game>
+	<identifier>31</identifier>
+	<nom_jeu>The Legend of Zelda : Breath of the Wild</nom_jeu>
+	<genre>Action-Aventure</genre>
+	<platform>Wii U, Nintendo Switch</platform>
+	<price money="euros">44.99</price>
+	<stock>29</stock>
+	<image>/bin/usr/Desktop</image>
+ </game>
+
+
+
+</repertoire>
