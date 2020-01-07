@@ -32,8 +32,10 @@ public class StoreGUI implements ActionListener {
     private JLabel           imgProduct;
 
     // PANEL CLIENT
-    private JTextField searchClient;
+    private JTextField searchNameClient;
+    private JTextField searchSurnameClient;
     private JButton    searchClientBtn;
+    private JButton    addClientBtn;
     private JPanel     infoClient;
 
     // PANEL BUY
@@ -88,9 +90,16 @@ public class StoreGUI implements ActionListener {
                 }
             }
         });
+        listModel.removeAllElements();
         JLabel titleListProducts = new JLabel("Les produits disponibles");  // text descriptif
+        JButton addToCart = new JButton("addToCart");
+        addToCart.setActionCommand("addToCart");
+        addToCart.addActionListener(this);
+
         infoProductsPanel.add(titleListProducts, BorderLayout.NORTH);
-        infoProductsPanel.add(listScroll, BorderLayout.SOUTH);
+        infoProductsPanel.add(listScroll, BorderLayout.CENTER);
+        infoProductsPanel.add(addToCart,BorderLayout.SOUTH);
+
         productPanel.add(infoProductsPanel, FlowLayout.LEFT);
         productPanel.setBorder(BorderFactory.createTitledBorder("Produits"));
 
@@ -116,18 +125,44 @@ public class StoreGUI implements ActionListener {
         center.add(productPanel);
 
         // INSERTION DE LA PARTIE CLIENT DE L'APPLICATION
-        JPanel clientPanel = new JPanel(new FlowLayout());
-        JPanel searchClientPlanel = new JPanel(new BorderLayout());
-        JLabel titleClient = new JLabel("Client(nom)");
-        searchClient = new JTextField(20);
+        JPanel clientPanel = new JPanel(new GridLayout(1,3));
+        JPanel addClientPanel = new JPanel(new FlowLayout());
+        JPanel searchClientPanel = new JPanel(new GridLayout(3,1));
+        JPanel searchBarNamePanel = new JPanel(new BorderLayout());
+        JPanel searchBarSurnamePanel = new JPanel(new BorderLayout());
+        JPanel voidPanel = new JPanel();
+
+        // Les barres de recherche
+        JLabel titleClientName = new JLabel("Client(name)");
+        searchNameClient = new JTextField(20);
+        JLabel titleClientSurname = new JLabel("Client(surname)");
+        searchSurnameClient = new JTextField(20);
+
+        // Les Boutons "Ajouter" et "Rechercher"
         searchClientBtn = new JButton("Chercher");
         searchClientBtn.setActionCommand("searchClient");
         searchClientBtn.addActionListener(this);
-        searchClientPlanel.add(titleClient, BorderLayout.NORTH);
-        searchClientPlanel.add(searchClient, BorderLayout.CENTER);
-        searchClientPlanel.add(searchClientBtn, BorderLayout.SOUTH);
+
+        addClientBtn = new JButton("Ajouter");
+        addClientBtn.setActionCommand("addClient");
+        addClientBtn.addActionListener(this);
+
+        //La gestion des positions
+        searchClientPanel.add(searchBarSurnamePanel);
+        searchBarSurnamePanel.add(titleClientSurname,BorderLayout.NORTH);
+        searchBarSurnamePanel.add(searchSurnameClient,BorderLayout.SOUTH);
+
+        searchClientPanel.add(searchBarNamePanel);
+        searchBarNamePanel.add(titleClientName,BorderLayout.NORTH);
+        searchBarNamePanel.add(searchNameClient,BorderLayout.SOUTH);
+
+        searchClientPanel.add(addClientPanel);
+        addClientPanel.add(addClientBtn, FlowLayout.LEFT);
+        addClientPanel.add(searchClientBtn, FlowLayout.CENTER);
+
         clientPanel.setBorder(BorderFactory.createTitledBorder("Clients"));
-        clientPanel.add(searchClientPlanel, FlowLayout.LEFT);
+        clientPanel.add(searchClientPanel);
+        //clientPanel.add(addClientPanel, FlowLayout.CENTER);
 
         JPanel infoClientPanel   = new JPanel(new BorderLayout());
         JLabel infoCurrentClient = new JLabel("Informations du client courant");
@@ -142,6 +177,8 @@ public class StoreGUI implements ActionListener {
         infoClient.add(adresse);
         infoClientPanel.add(infoCurrentClient, BorderLayout.NORTH);
         infoClientPanel.add(infoClient, BorderLayout.CENTER);
+
+        clientPanel.add(voidPanel);
         clientPanel.add(infoClientPanel);
         center.add(clientPanel);
 
@@ -150,6 +187,7 @@ public class StoreGUI implements ActionListener {
         clientBuy = new JPanel(new BorderLayout());
         JLabel titleBuyer = new JLabel("Nom du client courant");
         JLabel nameBuyer  = new JLabel("NOM Prénom");
+
         clientBuy.add(titleBuyer, BorderLayout.NORTH);
         clientBuy.add(nameBuyer, BorderLayout.SOUTH);
         transactionPanel.setBorder(BorderFactory.createTitledBorder("Transactions"));
@@ -157,9 +195,17 @@ public class StoreGUI implements ActionListener {
 
         productBuy = new JPanel(new BorderLayout());
         JLabel nameArticle  = new JLabel("NOM DE L'ARTICLE");
-        JLabel nbArticles = new JLabel("Nombre d'article : 0");
+        JLabel nbArticles = new JLabel("Nombre d'article :");
+
+        Object[] number = new Object[]{"0", "1", "2", "3", "4", "5"};
+        JComboBox numberProduct = new JComboBox(number);         // input
+        JPanel tmp = new JPanel(new FlowLayout());
+
         productBuy.add(nameArticle, BorderLayout.NORTH);
-        productBuy.add(nbArticles, BorderLayout.SOUTH);
+        productBuy.add(tmp, BorderLayout.SOUTH);
+        tmp.add(nbArticles);
+        tmp.add(numberProduct);
+
         transactionPanel.add(productBuy);
         buyBtn = new JButton("Acheter");
         buyBtn.setActionCommand("buyProducts");
@@ -191,7 +237,7 @@ public class StoreGUI implements ActionListener {
 
                 case "searchClient":
                     System.out.println("search client");
-                    System.out.println("clientInput : " + searchClient.getText());
+                    System.out.println("clientInput : " + searchNameClient.getText() + " " + searchSurnameClient.getText());
 
                     // code pour chercher le client à partir d'un nom ou prénom
                     // --> filtre des personnes stocker dans le fichier XML à partir de l'entré du texte
@@ -205,7 +251,13 @@ public class StoreGUI implements ActionListener {
                     // check du client
                     // check de l'existence du produit et du client
                     break;
-
+                case "addToCart":
+                  System.out.println("Product added to cart");
+                  break;
+                case "addClient":
+                  System.out.println("add client");
+                  System.out.println("clientInput : " + searchNameClient.getText() + " " + searchSurnameClient.getText());
+                  break;
                 // System.out.println(listProducts.getSelectedIndex());
             }
         } catch(Exception ex) {
@@ -229,6 +281,7 @@ public class StoreGUI implements ActionListener {
         listScroll = new JScrollPane(listProducts);     // contenu de la liste
         listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         listScroll.setMaximumSize(new Dimension(40, 90));
+        listScroll.setPreferredSize(new Dimension(40, 90));
         listScroll.updateUI();
         infoProductsPanel.updateUI();
 
