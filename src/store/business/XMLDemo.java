@@ -19,7 +19,8 @@ public class XMLDemo {
 	private DocumentBuilder documentBuilder;
     
     
-	private static String XML_INPUT_FILE = "doc/produits.xml";
+	private static String XML_INPUT_PRODUCTS = "doc/produits.xml";
+	private static String XML_INPUT_CLIENTS = "doc/clients.xml";
 
 	public XMLDemo() {
 		try {
@@ -129,11 +130,11 @@ public class XMLDemo {
 		return null;
 	}
 
-	public List<Product> readProducts(String category) {
+	public List<Product> getProducts(String category) {
 		Product currentProduct = null;
 		LinkedList<Product> allProducts = new LinkedList<Product>();
 
-		NodeList nodes = this.parseXMLFile(XML_INPUT_FILE);
+		NodeList nodes = this.parseXMLFile(XML_INPUT_PRODUCTS);
 		if (nodes == null) return null;
 		
 		for (int i = 0; i<nodes.getLength(); i++) {
@@ -163,9 +164,41 @@ public class XMLDemo {
 
 		return allProducts;
 	}
-	
-	// public static void main (String[] args) {
-	// 	XMLDemo demo = new XMLDemo();
-	// 	demo.readProducts("livre");
-	// }
+
+	public Client parseClient(Element currentElement) {
+		try {
+			String firstname = currentElement.getElementsByTagName("firstname").item(0).getTextContent();
+			String lastname  = currentElement.getElementsByTagName("lastname").item(0).getTextContent();
+			String address   = currentElement.getElementsByTagName("address").item(0).getTextContent();
+			String email     = currentElement.getElementsByTagName("email").item(0).getTextContent();
+			UUID   uniqueID  = UUID.randomUUID();
+			
+			Client client = new Client(firstname, lastname, address, email, uniqueID);
+			
+			return client;
+		} catch(Exception ex) {
+			System.out.println("Something is wrong with the XML client element");
+			System.out.println("Problem is : " + ex.getMessage());
+		}
+
+		return null;
+	}
+
+	public List<Client> getClients() {
+		Client currentClient = null;
+		LinkedList<Client> allClients = new LinkedList<Client>();
+
+		NodeList nodes = this.parseXMLFile(XML_INPUT_CLIENTS);
+		if (nodes == null) return null;
+		
+		for (int i = 0; i<nodes.getLength(); i++) {
+			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE)   {
+				Element currentElement = (Element) nodes.item(i);
+				currentClient = parseClient(currentElement);
+				allClients.add(currentClient);
+			}  
+		}
+
+		return allClients;
+	}
 }

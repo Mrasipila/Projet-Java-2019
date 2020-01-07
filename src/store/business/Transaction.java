@@ -9,9 +9,17 @@ public class Transaction {
     private Timestamp time;
 
     public Transaction(UUID clientID, UUID productID, int numProducts, Timestamp time) {
-        this.clientID = clientID;
-        this.productID = productID;
+        this.clientID    = clientID;
+        this.productID   = productID;
         this.numProducts = numProducts;
-        this.time = time;
+        this.time        = time;
+    }
+
+    public void printTransaction() {
+        System.out.println("clientID    : " + clientID);
+        System.out.println("productID   : " + productID);
+        System.out.println("numProducts : " + numProducts);
+        System.out.println("time        : " + time);
+        System.out.println();
     }
 }

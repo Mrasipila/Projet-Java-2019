@@ -2,38 +2,47 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class StoreGUI implements ActionListener {
     private Store store;
 
     // PANEL TOP
-    private JPanel infoStore;
-    private JLabel imgStore;
+    private JPanel    infoStore;
+    private JLabel    imgStore;
     private JComboBox searchProduct;
-    private JButton searchBtn;
+    private JButton   searchBtn;
 
     // PANEL PRODUCT
-    private JList listProducts;
-    private JPanel currentProduct;
-    private JLabel imgProduct;
+    private JList            listProducts;
+    private JPanel           productPanel;
+    private JPanel           infoProductsPanel;
+    private DefaultListModel listModel;
+    private JScrollPane      listScroll;
+    private List<String>     currentProductName;
+    private JPanel           currentProductPanel;
+    private Product          currentProduct;
+    private JLabel           imgProduct;
 
     // PANEL CLIENT
     private JTextField searchClient;
-    private JButton searchClientBtn;
-    private JPanel infoClient;
+    private JButton    searchClientBtn;
+    private JPanel     infoClient;
 
     // PANEL BUY
-    private JPanel clientBuy;
-    private JPanel productBuy;
+    private JPanel  clientBuy;
+    private JPanel  productBuy;
     private JButton buyBtn;
 
     public StoreGUI() {
-        store = new Store();
+        store = new Store("Tous");
 
         JPanel center = new JPanel(new GridLayout(4, 1));
         
@@ -64,33 +73,39 @@ public class StoreGUI implements ActionListener {
         center.add(infoStore);
 
         // INSERTION DE LA PARTIE PRODUIT DE L'APPLICATION
-        JPanel productPanel      = new JPanel(new FlowLayout());    // Panneau qui contient liste + détail + image 
-        JPanel infoProductsPanel = new JPanel(new BorderLayout());  // Panneau qui contient la list des produits
+        productPanel      = new JPanel(new FlowLayout());    // Panneau qui contient liste + détail + image 
+        infoProductsPanel = new JPanel(new BorderLayout());  // Panneau qui contient la list des produits
+        listModel         = new DefaultListModel();
+        updateProductsList();
+        listProducts.addListSelectionListener(new ListSelectionListener(){
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    currentProductName = listProducts.getSelectedValuesList();
+                    System.out.println(currentProductName);
+                    // updateProductInfo();
+                } 
+            }
+        });
         JLabel titleListProducts = new JLabel("Les produits disponibles");  // text descriptif
-        listProducts             = new JList();                     // liste de tous les produits
-        listProducts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        listProducts.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        listProducts.setVisibleRowCount(-1);
-        JScrollPane listScroll = new JScrollPane(listProducts);     // contenu de la liste
-        listScroll.setPreferredSize(new Dimension(100, 80));        // dimmension de la liste
         infoProductsPanel.add(titleListProducts, BorderLayout.NORTH);
-        infoProductsPanel.add(listProducts, BorderLayout.SOUTH);
+        infoProductsPanel.add(listScroll, BorderLayout.SOUTH);
         productPanel.add(infoProductsPanel, FlowLayout.LEFT);
         productPanel.setBorder(BorderFactory.createTitledBorder("Produits"));
         
         JPanel infoOneProduct     = new JPanel(new BorderLayout());     // information d'un produit
         JLabel currentTitle       = new JLabel("Produit courant :");    // titre de la partie
-        currentProduct            = new JPanel(new GridLayout(4, 1));   // Détail des caractéristiques du produit
+        currentProductPanel       = new JPanel(new GridLayout(4, 1));   // Détail des caractéristiques du produit
         JLabel titleProduct       = new JLabel("Title");                // texte
         JLabel descriptionProduct = new JLabel("Description");          // texte
         JLabel priceProduct       = new JLabel("Prix");                 // texte
         JLabel quantityProduct    = new JLabel("Quantité");             // texte
         infoOneProduct.add(currentTitle, BorderLayout.NORTH);
-        currentProduct.add(titleProduct);
-        currentProduct.add(descriptionProduct);
-        currentProduct.add(priceProduct);
-        currentProduct.add(quantityProduct);
-        infoOneProduct.add(currentProduct, BorderLayout.CENTER);
+        currentProductPanel.add(titleProduct);
+        currentProductPanel.add(descriptionProduct);
+        currentProductPanel.add(priceProduct);
+        currentProductPanel.add(quantityProduct);
+        infoOneProduct.add(currentProductPanel, BorderLayout.CENTER);
         productPanel.add(infoOneProduct);
 
         JPanel imgProductPanel = new JPanel(new BorderLayout());        // Panneau qui contient l'image
@@ -163,11 +178,12 @@ public class StoreGUI implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         try {
+            System.out.println(e.getActionCommand());
             switch (e.getActionCommand()) {
                 case "searchCat":
                     System.out.println("search Category");
                     System.out.println("catgegory : " + searchProduct.getSelectedItem());
-                    store.loadStore(searchProduct.getSelectedItem().toString());
+                    updateProductsList();
                     // code pour chercher la category du produit
                     // --> methode qui recherche les produits d'une category (= trie sur les category dans le fichier XML)
                     break;
@@ -175,6 +191,7 @@ public class StoreGUI implements ActionListener {
                 case "searchClient":
                     System.out.println("search client");
                     System.out.println("clientInput : " + searchClient.getText());
+                    
                     // code pour chercher le client à partir d'un nom ou prénom
                     // --> filtre des personnes stocker dans le fichier XML à partir de l'entré du texte
                     break;
@@ -187,6 +204,8 @@ public class StoreGUI implements ActionListener {
                     // check du client
                     // check de l'existence du produit et du client
                     break;
+
+                // System.out.println(listProducts.getSelectedIndex());
             }
         } catch(Exception ex) {
             System.out.println(ex.getMessage());
@@ -194,8 +213,49 @@ public class StoreGUI implements ActionListener {
         }
     }
 
+    private void updateProductsList() {
+        listModel.clear();
+        // listProducts.clearSelection();
+        // listScroll.removeAll();
+        store.updateProducts(searchProduct.getSelectedItem().toString());
+        for (int i = 0; i < store.getProducts().size(); i++) 
+            listModel.addElement(store.getProducts().get(i).getName());
+        listProducts = new JList(listModel);
+        listProducts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        listProducts.setLayoutOrientation(JList.VERTICAL_WRAP);
+        listProducts.setVisibleRowCount(-1);
+        
+        listScroll = new JScrollPane(listProducts);     // contenu de la liste
+        listScroll.setMaximumSize(new Dimension(40, 90));
+        listScroll.updateUI();
+        infoProductsPanel.updateUI();
+
+        System.out.println("listModel    : " + listModel);
+        System.out.println("\nlistProducts : " + listProducts);
+        System.out.println("\nlistScroll   : " + listScroll);
+    }
+
+    private void updateProductInfo() {
+        System.out.println("currentProductName : " + currentProductName);
+        currentProduct = getCurrentProduct(currentProductName);
+        System.out.println(currentProduct);
+        currentProduct.printProduct();
+    }
+
+    private Product getCurrentProduct(List<String> names) {
+        Product product = new Product("Sans nom", 0, UUID.randomUUID(), 1, "/");
+        for (int i = 0; i < store.getProducts().size(); i++) {
+            for (String var : names) {
+                if (var == store.getProducts().get(i).getName()) 
+                    return store.getProducts().get(i);
+            }
+        }
+        return product;
+    }
+    
+
     public static void main(String[] args) {
         System.out.println("Starting project StoreGUI...");
-        StoreGUI storeGUI = new StoreGUI();
+        new StoreGUI();
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<repertoire>
+
+    <client>
+        <firstname>Jérémy</firstname>
+        <lastname>Tourari</lastname>
+        <address>XX nom de la rue</address>
+        <email>tourari@et.esiea.fr</email>
+        <uniqueID></uniqueID>
+    </client>
+
+    <client>
+        <firstname>Sofiane</firstname>
+        <lastname>Serkesti</lastname>
+        <address>XX nom de la rue</address>
+        <email>serkesti@et.esiea.fr</email>
+        <uniqueID></uniqueID>
+    </client>
+
+    <client>
+        <firstname>Meysan</firstname>
+        <lastname>Kanzari</lastname>
+        <address>XX nom de la rue</address>
+        <email>kanzari@et.esiea.fr</email>
+        <uniqueID></uniqueID>
+    </client>
+
+</repertoire>
