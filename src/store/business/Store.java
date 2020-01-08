@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class Store {
     private XMLDemo xmlDemo;
@@ -26,7 +27,19 @@ public class Store {
 
     public void updateProducts(String category) {
         productList = xmlDemo.getProducts(getCategory(category));
-        System.out.println(productList);
+    }
+
+    public Client getClient(String first, String last) {
+        Client client = new Client("Prénom", "Nom", "Aucun résultat", UUID.randomUUID());
+        List<Client> clients = xmlDemo.getClients();
+        for (int i = 0; i < clients.size(); i++) {
+            System.out.println(clients.get(i).getLastname().toLowerCase());
+            System.out.println(last.toLowerCase());
+            clients.get(i).printClient();
+            if (clients.get(i).getFirstname().toLowerCase().equals(first.toLowerCase()) && clients.get(i).getLastname().toLowerCase().equals(last.toLowerCase())) client = clients.get(i);
+            else if (clients.get(i).getLastname().toLowerCase().equals(last.toLowerCase())) client = clients.get(i);
+        }
+        return client;
     }
 
     public List<Product> getProducts() {
@@ -53,8 +66,12 @@ public class Store {
         productList.add(p);
     }
 
-    public void addClient(Client c) {
-        clientList.add(c);
+    // public void addClient(Client c) {
+    //     clientList.add(c);
+    // }
+
+    public void addClient(String firstname, String lastname, String email) {
+        xmlDemo.addClient(firstname, lastname, email);
     }
 
     public void addTransaction(Transaction t) {

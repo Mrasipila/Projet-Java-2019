@@ -19,8 +19,10 @@ public class XMLDemo {
 	private DocumentBuilder documentBuilder;
     
     
-	private static String XML_INPUT_PRODUCTS = "doc/produits.xml";
-	private static String XML_INPUT_CLIENTS = "doc/clients.xml";
+	private static String XML_PRODUCTS = "doc/produits.xml";
+	private static String XML_CLIENTS  = "doc/clients.xml";
+
+	private static String XML_OUTPUT_CLIENTS = "doc/clients_output.xml";
 
 	public XMLDemo() {
 		try {
@@ -52,7 +54,23 @@ public class XMLDemo {
 		return elementNodes;
 	}
 
+	public Document createXMLDocument() {
+		return documentBuilder.newDocument();
+	}	
+
+	public void createXMLFile(Document document, String filePath) {
+		try {
+			DOMSource domSource = new DOMSource(document);
+			StreamResult streamResult = new StreamResult(new File(filePath));
+			transformer.transform(domSource, streamResult);
+		} catch (TransformerException tfe) {
+            tfe.printStackTrace();
+        }
+		System.out.println("Done creating XML File");
+	}
+
 	public Book parseLivre(Element currentElement) {
+		Book book = new Book("sans nom", 0.0, UUID.randomUUID(), 0, "/", "Personne", 0, "French");
 		try {
 			String nom_livre  = currentElement.getElementsByTagName("nom_livre").item(0).getTextContent();
 			String author     = currentElement.getElementsByTagName("author").item(0).getTextContent();
@@ -63,19 +81,20 @@ public class XMLDemo {
 			String image      = currentElement.getElementsByTagName("image").item(0).getTextContent();
 			String identifier = currentElement.getElementsByTagName("identifier").item(0).getTextContent();
 			UUID   uniqueID   = UUID.randomUUID();
-			Book book = new Book(nom_livre, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, author, Integer.valueOf(pages), language);
+			book = new Book(nom_livre, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, author, Integer.valueOf(pages), language);
 			// book.printProduct();
-
-			return book;
 		} catch (Exception ex) {
 			System.out.println("Something is wrong with the XML client book element");
 			System.out.println("Problem is : " + ex.getMessage());
 		}
 
-		return null;
+		return book;
 	}
 
 	public DVD parseDVD(Element currentElement) {
+		Vector<String> actorsVect = new Vector<String>();
+		actorsVect.add(" ");
+		DVD dvd = new DVD("sans nom", 0.0, UUID.randomUUID(), 0, "/", actorsVect, 0, "Aucun");
 		try {
 			String nom_DVD    = currentElement.getElementsByTagName("nom_DVD").item(0).getTextContent();
 			String actors     = currentElement.getElementsByTagName("actors").item(0).getTextContent();
@@ -87,23 +106,25 @@ public class XMLDemo {
 			String identifier = currentElement.getElementsByTagName("identifier").item(0).getTextContent();
 			UUID   uniqueID   = UUID.randomUUID();
 
-			Vector<String> actorsVect = new Vector<String>();
+			actorsVect = new Vector<String>();
 			String[] allActors = actors.split(", ");
 			for (String var : allActors) actorsVect.add(var);
 
-			DVD dvd = new DVD(nom_DVD, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, actorsVect, Integer.valueOf(duration), genre);
+			dvd = new DVD(nom_DVD, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, actorsVect, Integer.valueOf(duration), genre);
 			// dvd.printProduct();
 
-			return dvd;
 		} catch(Exception ex) {
 			System.out.println("Something is wrong with the XML client DVD element");
 			System.out.println("Problem is : " + ex.getMessage());
 		}
-
-		return null;
+		
+		return dvd;
 	}
 
 	public Game parseGame(Element currentElement) {
+		Vector<String> platformVect = new Vector<String>();
+		platformVect.add(" ");
+		Game game = new Game("sans nom", 0.0, UUID.randomUUID(), 0, "/", " ", platformVect);
 		try {
 			String identifier = currentElement.getElementsByTagName("identifier").item(0).getTextContent();
 			String nom_jeu    = currentElement.getElementsByTagName("nom_jeu").item(0).getTextContent();
@@ -114,27 +135,26 @@ public class XMLDemo {
 			String image      = currentElement.getElementsByTagName("image").item(0).getTextContent();
 			UUID   uniqueID   = UUID.randomUUID();
 			
-			Vector<String> platformVect = new Vector<String>();
+			platformVect = new Vector<String>();
 			String[] allPlatform = platform.split(", ");
 			for (String var : allPlatform) platformVect.add(var);
 			
-			Game game = new Game(nom_jeu, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, genre, platformVect);
+			game = new Game(nom_jeu, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, genre, platformVect);
 			// game.printProduct();
 			
-			return game;
 		} catch(Exception ex) {
 			System.out.println("Something is wrong with the XML client game element");
 			System.out.println("Problem is : " + ex.getMessage());
 		}
-
-		return null;
+		
+		return game;
 	}
 
 	public List<Product> getProducts(String category) {
-		Product currentProduct = null;
+		Product currentProduct = new Product("sans nom", 0.0, UUID.randomUUID(), 0, "/");
 		LinkedList<Product> allProducts = new LinkedList<Product>();
 
-		NodeList nodes = this.parseXMLFile(XML_INPUT_PRODUCTS);
+		NodeList nodes = this.parseXMLFile(XML_PRODUCTS);
 		if (nodes == null) return null;
 		
 		for (int i = 0; i<nodes.getLength(); i++) {
@@ -166,29 +186,27 @@ public class XMLDemo {
 	}
 
 	public Client parseClient(Element currentElement) {
+		Client client = new Client("Prénom", "Nom", "example@example.com", UUID.randomUUID());
 		try {
 			String firstname = currentElement.getElementsByTagName("firstname").item(0).getTextContent();
 			String lastname  = currentElement.getElementsByTagName("lastname").item(0).getTextContent();
-			String address   = currentElement.getElementsByTagName("address").item(0).getTextContent();
 			String email     = currentElement.getElementsByTagName("email").item(0).getTextContent();
-			UUID   uniqueID  = UUID.randomUUID();
+			UUID   uniqueID  = UUID.fromString(currentElement.getElementsByTagName("uniqueID").item(0).getTextContent());
 			
-			Client client = new Client(firstname, lastname, address, email, uniqueID);
-			
-			return client;
+			client = new Client(firstname, lastname, email, uniqueID);
 		} catch(Exception ex) {
 			System.out.println("Something is wrong with the XML client element");
 			System.out.println("Problem is : " + ex.getMessage());
 		}
-
-		return null;
+		
+		return client;
 	}
 
 	public List<Client> getClients() {
 		Client currentClient = null;
 		LinkedList<Client> allClients = new LinkedList<Client>();
 
-		NodeList nodes = this.parseXMLFile(XML_INPUT_CLIENTS);
+		NodeList nodes = this.parseXMLFile(XML_CLIENTS);
 		if (nodes == null) return null;
 		
 		for (int i = 0; i<nodes.getLength(); i++) {
@@ -200,5 +218,67 @@ public class XMLDemo {
 		}
 
 		return allClients;
+	}
+
+	public void addClient(String firstname, String lastname, String email) {
+		Document document = this.createXMLDocument();
+		if (document == null) return;
+
+			// create root element
+		Element root = document.createElement("clients");
+		document.appendChild(root);
+
+		//save one "client" element; create a loop to save more elements!!
+		Element client = document.createElement("client");
+		// clientUUID element
+		UUID uniqueID = UUID.randomUUID();
+		Element clientUUID = document.createElement("uniqueID");
+		clientUUID.appendChild(document.createTextNode(uniqueID.toString()));
+		client.appendChild(clientUUID);
+		// firstName element
+		String firstName = firstname;
+		Element firstNameElement = document.createElement("firstname");
+		firstNameElement.appendChild(document.createTextNode(firstName));
+		client.appendChild(firstNameElement);
+		//lastName element
+		String lastName = lastname;
+		Element lastNameElement = document.createElement("lastname");
+		lastNameElement.appendChild(document.createTextNode(lastName));
+		client.appendChild(lastNameElement);
+		//address element
+		String eMail = email;
+		Element emailElement = document.createElement("email");
+		emailElement.appendChild(document.createTextNode(eMail));
+		client.appendChild(emailElement);
+		root.appendChild(client);
+
+		List<Client> allClients = getClients();
+		for (int i = 0; i < allClients.size(); i++) {
+				//save one "client" element; create a loop to save more elements!!
+			client = document.createElement("client");
+			// clientUUID element
+			uniqueID = UUID.randomUUID();
+			clientUUID = document.createElement("uniqueID");
+			clientUUID.appendChild(document.createTextNode(uniqueID.toString()));
+			client.appendChild(clientUUID);
+			// firstName element
+			firstName = allClients.get(i).getFirstname();
+			firstNameElement = document.createElement("firstname");
+			firstNameElement.appendChild(document.createTextNode(firstName));
+			client.appendChild(firstNameElement);
+			//lastName element
+			lastName = allClients.get(i).getLastname();
+			lastNameElement = document.createElement("lastname");
+			lastNameElement.appendChild(document.createTextNode(lastName));
+			client.appendChild(lastNameElement);
+			//address element
+			eMail = allClients.get(i).getEmail();
+			emailElement = document.createElement("email");
+			emailElement.appendChild(document.createTextNode(eMail));
+			client.appendChild(emailElement);
+			root.appendChild(client);
+		}
+		
+		this.createXMLFile(document, XML_CLIENTS);
 	}
 }

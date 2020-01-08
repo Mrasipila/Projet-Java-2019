@@ -1,29 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<repertoire>
-
-    <client>
-        <firstname>Jérémy</firstname>
-        <lastname>Tourari</lastname>
-        <address>XX nom de la rue</address>
-        <email>tourari@et.esiea.fr</email>
-        <uniqueID></uniqueID>
-    </client>
-
-    <client>
-        <firstname>Sofiane</firstname>
-        <lastname>Serkesti</lastname>
-        <address>XX nom de la rue</address>
-        <email>serkesti@et.esiea.fr</email>
-        <uniqueID></uniqueID>
-    </client>
-
-    <client>
-        <firstname>Meysan</firstname>
-        <lastname>Kanzari</lastname>
-        <address>XX nom de la rue</address>
-        <email>kanzari@et.esiea.fr</email>
-        <uniqueID></uniqueID>
-    </client>
-
-</repertoire>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clients>
+<client><uniqueID>a0491c75-70dd-40a6-8d22-96b2942f1872</uniqueID><firstname>Jérémy</firstname><lastname>Tourari</lastname><email>tourari@et.esiea.fr</email></client><client><uniqueID>32d06f5c-92e6-451e-8d2e-b31cd71d45eb</uniqueID><firstname>Sofiane</firstname><lastname>Serkesti</lastname><email>serkesti@et.esiea.fr</email></client><client><uniqueID>afda6a55-ee69-4290-a633-590aee5747f3</uniqueID><firstname>Meysan</firstname><lastname>Kanzari</lastname><email>kanzari@et.esiea.fr</email></client></clients>
