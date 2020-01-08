@@ -21,15 +21,24 @@ public class StoreGUI implements ActionListener {
     private JButton   searchBtn;
 
     // PANEL PRODUCT
-    private JList            listProducts;
     private JPanel           productPanel;
     private JPanel           infoProductsPanel;
+    private JPanel           infoOneProduct;
+    private JPanel           currentProductPanel;
+    private JLabel           imgProduct;
+    private JLabel           titleProduct;
+    private JLabel           descriptionProduct;
+    private JLabel           priceProduct;
+    private JLabel           quantityProduct;
+    private JList            listProducts;
     private DefaultListModel listModel;
     private JScrollPane      listScroll;
-    private List<String>     currentProductName;
-    private JPanel           currentProductPanel;
     private Product          currentProduct;
-    private JLabel           imgProduct;
+    private String           currentProductName;
+    private String           strTitle;
+    private String           strDescription;
+    private String           strPrice;
+    private String           strQuantity;
 
     // PANEL CLIENT
     private JTextField searchNameClient;
@@ -47,11 +56,10 @@ public class StoreGUI implements ActionListener {
         store = new Store("Tous");
 
         JPanel center = new JPanel(new GridLayout(4, 1));
-
+        
         // INSERTION DE LA PARTIE INFORMATION DE L'APPLICATION
         infoStore         = new JPanel(new FlowLayout());   // Définition de la ligne
         JPanel infoPanel  = new JPanel(new BorderLayout());  // Panneau qui contient logo + titre
-
         JLabel titleStore = new JLabel("Amazon du pauvre"); // titre
         imgStore          = new JLabel(new ImageIcon("files/logoShop.png")); // logo
         infoPanel.add(titleStore, BorderLayout.NORTH);  // insertion du titre
@@ -76,40 +84,54 @@ public class StoreGUI implements ActionListener {
         center.add(infoStore);
 
         // INSERTION DE LA PARTIE PRODUIT DE L'APPLICATION
-        productPanel      = new JPanel(new FlowLayout());    // Panneau qui contient liste + détail + image
+        productPanel      = new JPanel(new FlowLayout());    // Panneau qui contient liste + détail + image 
         infoProductsPanel = new JPanel(new BorderLayout());  // Panneau qui contient la list des produits
         listModel         = new DefaultListModel();
-        updateProductsList();
+        // updateProductsList();
+        store.updateProducts(searchProduct.getSelectedItem().toString());
+        for (int i = 0; i < store.getProducts().size(); i++) 
+            listModel.addElement(store.getProducts().get(i).getName());
+        listProducts = new JList(listModel);
+        listProducts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        listProducts.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        listProducts.setVisibleRowCount(-1);
+        listScroll = new JScrollPane(listProducts);     // contenu de la liste
+        listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        listScroll.setMaximumSize(new Dimension(40, 90));
+        listScroll.setPreferredSize(new Dimension(40, 90));
         listProducts.addListSelectionListener(new ListSelectionListener(){
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    currentProductName = listProducts.getSelectedValuesList();
+                    // currentProductName = listProducts.getSelectedValuesList();
+                    int indexProduct   = listProducts.getAnchorSelectionIndex();
+                    currentProductName = listProducts.getModel().getElementAt(indexProduct).toString();
                     System.out.println(currentProductName);
-                    // updateProductInfo();
-                }
+                    updateProductInfo();
+                } 
             }
         });
-        listModel.removeAllElements();
+        // listModel.removeAllElements();
         JLabel titleListProducts = new JLabel("Les produits disponibles");  // text descriptif
-        JButton addToCart = new JButton("addToCart");
-        addToCart.setActionCommand("addToCart");
-        addToCart.addActionListener(this);
 
         infoProductsPanel.add(titleListProducts, BorderLayout.NORTH);
         infoProductsPanel.add(listScroll, BorderLayout.CENTER);
-        infoProductsPanel.add(addToCart,BorderLayout.SOUTH);
 
         productPanel.add(infoProductsPanel, FlowLayout.LEFT);
         productPanel.setBorder(BorderFactory.createTitledBorder("Produits"));
 
-        JPanel infoOneProduct     = new JPanel(new BorderLayout());     // information d'un produit
+        strTitle                  = "Titre produit";
+        strDescription            = "Description";
+        strPrice                  = "Prix";
+        strQuantity               = "Quantité";
+        
+        infoOneProduct            = new JPanel(new BorderLayout());     // information d'un produit
         JLabel currentTitle       = new JLabel("Produit courant :");    // titre de la partie
         currentProductPanel       = new JPanel(new GridLayout(4, 1));   // Détail des caractéristiques du produit
-        JLabel titleProduct       = new JLabel("Title");                // texte
-        JLabel descriptionProduct = new JLabel("Description");          // texte
-        JLabel priceProduct       = new JLabel("Prix");                 // texte
-        JLabel quantityProduct    = new JLabel("Quantité");             // texte
+        titleProduct       = new JLabel(strTitle);                // texte
+        descriptionProduct = new JLabel(strDescription);          // texte
+        priceProduct       = new JLabel(strPrice);                 // texte
+        quantityProduct    = new JLabel(strQuantity);             // texte
         infoOneProduct.add(currentTitle, BorderLayout.NORTH);
         currentProductPanel.add(titleProduct);
         currentProductPanel.add(descriptionProduct);
@@ -213,6 +235,7 @@ public class StoreGUI implements ActionListener {
         transactionPanel.add(buyBtn);
         center.add(transactionPanel);
 
+
         JFrame frame = new JFrame("AmazonDuPauvre");
         frame.setMinimumSize(new Dimension(1280, 720));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -225,7 +248,7 @@ public class StoreGUI implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         try {
-            System.out.println(e.getActionCommand());
+            // System.out.println(e.getActionCommand());
             switch (e.getActionCommand()) {
                 case "searchCat":
                     System.out.println("search Category");
@@ -237,8 +260,8 @@ public class StoreGUI implements ActionListener {
 
                 case "searchClient":
                     System.out.println("search client");
-                    System.out.println("clientInput : " + searchNameClient.getText() + " " + searchSurnameClient.getText());
-
+                    // System.out.println("clientInput : " + searchClient.getText());
+                    
                     // code pour chercher le client à partir d'un nom ou prénom
                     // --> filtre des personnes stocker dans le fichier XML à partir de l'entré du texte
                     break;
@@ -251,13 +274,7 @@ public class StoreGUI implements ActionListener {
                     // check du client
                     // check de l'existence du produit et du client
                     break;
-                case "addToCart":
-                  System.out.println("Product added to cart");
-                  break;
-                case "addClient":
-                  System.out.println("add client");
-                  System.out.println("clientInput : " + searchNameClient.getText() + " " + searchSurnameClient.getText());
-                  break;
+
                 // System.out.println(listProducts.getSelectedIndex());
             }
         } catch(Exception ex) {
@@ -268,20 +285,19 @@ public class StoreGUI implements ActionListener {
 
     private void updateProductsList() {
         listModel.clear();
-        // listProducts.clearSelection();
-        // listScroll.removeAll();
         store.updateProducts(searchProduct.getSelectedItem().toString());
-        for (int i = 0; i < store.getProducts().size(); i++)
+        for (int i = 0; i < store.getProducts().size(); i++) 
             listModel.addElement(store.getProducts().get(i).getName());
-        listProducts = new JList(listModel);
-        listProducts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        listProducts.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        listProducts.setVisibleRowCount(-1);
-
-        listScroll = new JScrollPane(listProducts);     // contenu de la liste
-        listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        listScroll.setMaximumSize(new Dimension(40, 90));
-        listScroll.setPreferredSize(new Dimension(40, 90));
+        // listProducts = new JList(listModel);
+        // listProducts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        // listProducts.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        // listProducts.setVisibleRowCount(-1);
+        // listModel.updateUI();
+        
+        // listScroll = new JScrollPane(listProducts);     // contenu de la liste
+        // listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        // listScroll.setMaximumSize(new Dimension(40, 90));
+        // listScroll.setPreferredSize(new Dimension(40, 90));
         listScroll.updateUI();
         infoProductsPanel.updateUI();
 
@@ -291,23 +307,34 @@ public class StoreGUI implements ActionListener {
     }
 
     private void updateProductInfo() {
+        currentProductPanel.removeAll();
         System.out.println("currentProductName : " + currentProductName);
         currentProduct = getCurrentProduct(currentProductName);
         System.out.println(currentProduct);
+        strTitle    = currentProduct.getName();
+        strPrice    = String.valueOf(currentProduct.getPrice());
+        strQuantity = String.valueOf(currentProduct.getStock());
+        titleProduct       = new JLabel(strTitle);                // texte
+        priceProduct       = new JLabel(strPrice + "€");                 // texte
+        quantityProduct    = new JLabel(strQuantity + " unité(s)");             // texte
+        currentProductPanel.add(titleProduct);
+        currentProductPanel.add(priceProduct);
+        currentProductPanel.add(quantityProduct);
+        // currentProductName.updateUI();
+        infoOneProduct.updateUI();
+        productPanel.updateUI();
         currentProduct.printProduct();
     }
 
-    private Product getCurrentProduct(List<String> names) {
+    private Product getCurrentProduct(String name) {
         Product product = new Product("Sans nom", 0, UUID.randomUUID(), 1, "/");
         for (int i = 0; i < store.getProducts().size(); i++) {
-            for (String var : names) {
-                if (var == store.getProducts().get(i).getName())
-                    return store.getProducts().get(i);
-            }
+            if (name == store.getProducts().get(i).getName()) 
+                return store.getProducts().get(i);
         }
         return product;
     }
-
+    
 
     public static void main(String[] args) {
         System.out.println("Starting project StoreGUI...");

@@ -26,6 +26,7 @@ public class Store {
 
     public void updateProducts(String category) {
         productList = xmlDemo.getProducts(getCategory(category));
+        System.out.println(productList);
     }
 
     public List<Product> getProducts() {
