@@ -7,6 +7,7 @@ import javax.swing.event.ListSelectionListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -106,7 +107,6 @@ public class StoreGUI implements ActionListener {
         productPanel      = new JPanel(new FlowLayout());    // Panneau qui contient liste + détail + image 
         infoProductsPanel = new JPanel(new BorderLayout());  // Panneau qui contient la list des produits
         listModel         = new DefaultListModel<String>();
-        // updateProductsList();
         store.updateProducts(searchProduct.getSelectedItem().toString());
         for (int i = 0; i < store.getProducts().size(); i++) 
             listModel.addElement(store.getProducts().get(i).getName());
@@ -119,7 +119,6 @@ public class StoreGUI implements ActionListener {
         listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         listScroll.setMaximumSize(new Dimension(500, 100));
         listScroll.setPreferredSize(new Dimension(500, 100));
-        // listProducts.setSelectedIndex(0);
         listProducts.addListSelectionListener(new ListSelectionListener(){
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -131,7 +130,6 @@ public class StoreGUI implements ActionListener {
                         System.out.println("NAME  : " + currentProductName);
                         updateProductInfo();
                     }
-                    // System.out.println("click Product");
                 } 
             }
         });
@@ -196,6 +194,7 @@ public class StoreGUI implements ActionListener {
         addClientBtn = new JButton("Ajouter");
         addClientBtn.setActionCommand("addClient");
         addClientBtn.addActionListener(this);
+        addClientBtn.setEnabled(false);
 
         //La gestion des positions
         searchBarSurnamePanel.add(titleClientSurname,BorderLayout.NORTH);
@@ -265,6 +264,7 @@ public class StoreGUI implements ActionListener {
         buyBtn = new JButton("Acheter");
         buyBtn.setActionCommand("buyProducts");
         buyBtn.addActionListener(this);
+        buyBtn.setEnabled(false);
         transactionPanel.add(buyBtn, FlowLayout.RIGHT);
         center.add(transactionPanel);
 
@@ -313,6 +313,10 @@ public class StoreGUI implements ActionListener {
 
                 case "buyProducts":
                     System.out.println("buy products");
+                    // currentClient.printClient();
+                    // currentProduct.printProduct();
+                    Transaction t = new Transaction(currentClient.getId(), currentProduct.getId(), 1, LocalDateTime.now().toString());
+                    store.addTransaction(t);
                     // conclusion de la transaction
                     // check que les différentes informations correspondent bien à une situation possible
                     // check des stock
@@ -370,6 +374,9 @@ public class StoreGUI implements ActionListener {
         transactionPanel.add(productBuy, FlowLayout.CENTER);
         productBuy.updateUI();
 
+        if (!currentClient.getLastname().equals("Nom") && !currentClient.getFirstname().equals("Prénom") && !currentClient.getEmail().equals("Aucun résultat") && currentProduct != null) {
+            buyBtn.setEnabled(true);
+        }
 
     }
 
@@ -377,6 +384,12 @@ public class StoreGUI implements ActionListener {
         infoClient.removeAll();
         clientBuy.removeAll();
         currentClient = store.getClient(searchNameClient.getText(), searchSurnameClient.getText());
+        System.out.println(searchNameClient.getText().length());
+        if (currentClient.getLastname().equals("Nom") && currentClient.getFirstname().equals("Prénom") && currentClient.getEmail().equals("Aucun résultat"))
+            if (searchNameClient.getText().length() > 0 && searchSurnameClient.getText().length() > 0 && searchEmailClient.getText().length() > 0) 
+                addClientBtn.setEnabled(true); 
+        else addClientBtn.setEnabled(false);
+        
         strFirstname  = currentClient.getFirstname();
         strLastname   = currentClient.getLastname();
         strEmail      = currentClient.getEmail();
@@ -389,6 +402,10 @@ public class StoreGUI implements ActionListener {
         infoClient.updateUI();
         infoClientPanel.updateUI();
         currentClient.printClient();
+
+        if (currentClient != null && currentProduct != null) {
+            buyBtn.setEnabled(true);
+        }
 
         nameBuyer = new JLabel(strLastname + " " + strFirstname);
         clientBuy.add(titleBuyer, BorderLayout.NORTH);

@@ -75,7 +75,8 @@ public class Store {
     }
 
     public void addTransaction(Transaction t) {
-        transactionList.add(t);
+        xmlDemo.addTransaction(t);
+        // System.out.println(xmlDemo.getTransactions());
     }
 
     public void addCategory(Product p, String cat) {

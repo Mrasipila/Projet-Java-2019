@@ -26,7 +26,7 @@ public class Product {
         return price;
     }
 
-    public UUID getID() {
+    public UUID getId() {
         return identifier;
     }
 

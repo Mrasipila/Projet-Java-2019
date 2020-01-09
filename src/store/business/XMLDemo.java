@@ -11,18 +11,21 @@ import java.util.UUID;
 import java.util.Vector;
 import java.util.List;
 import java.util.LinkedList;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class XMLDemo {
-	private TransformerFactory transformerFactory;
-	private Transformer transformer;
+	private TransformerFactory     transformerFactory;
+	private Transformer            transformer;
 	private DocumentBuilderFactory documentFactory;
-	private DocumentBuilder documentBuilder;
+	private DocumentBuilder        documentBuilder;
+	private LocalDateTime          ldt;
     
     
-	private static String XML_PRODUCTS = "doc/produits.xml";
-	private static String XML_CLIENTS  = "doc/clients.xml";
-
-	private static String XML_OUTPUT_CLIENTS = "doc/clients_output.xml";
+	private static String XML_PRODUCTS      = "files/produits.xml";
+	private static String XML_CLIENTS       = "files/clients.xml";
+	private static String XML_TRANSACTIONS  = "files/transactions.xml";
+	private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
 	public XMLDemo() {
 		try {
@@ -224,28 +227,22 @@ public class XMLDemo {
 		Document document = this.createXMLDocument();
 		if (document == null) return;
 
-			// create root element
 		Element root = document.createElement("clients");
 		document.appendChild(root);
 
-		//save one "client" element; create a loop to save more elements!!
 		Element client = document.createElement("client");
-		// clientUUID element
 		UUID uniqueID = UUID.randomUUID();
 		Element clientUUID = document.createElement("uniqueID");
 		clientUUID.appendChild(document.createTextNode(uniqueID.toString()));
 		client.appendChild(clientUUID);
-		// firstName element
 		String firstName = firstname;
 		Element firstNameElement = document.createElement("firstname");
 		firstNameElement.appendChild(document.createTextNode(firstName));
 		client.appendChild(firstNameElement);
-		//lastName element
 		String lastName = lastname;
 		Element lastNameElement = document.createElement("lastname");
 		lastNameElement.appendChild(document.createTextNode(lastName));
 		client.appendChild(lastNameElement);
-		//address element
 		String eMail = email;
 		Element emailElement = document.createElement("email");
 		emailElement.appendChild(document.createTextNode(eMail));
@@ -254,24 +251,19 @@ public class XMLDemo {
 
 		List<Client> allClients = getClients();
 		for (int i = 0; i < allClients.size(); i++) {
-				//save one "client" element; create a loop to save more elements!!
 			client = document.createElement("client");
-			// clientUUID element
 			uniqueID = UUID.randomUUID();
 			clientUUID = document.createElement("uniqueID");
 			clientUUID.appendChild(document.createTextNode(uniqueID.toString()));
 			client.appendChild(clientUUID);
-			// firstName element
 			firstName = allClients.get(i).getFirstname();
 			firstNameElement = document.createElement("firstname");
 			firstNameElement.appendChild(document.createTextNode(firstName));
 			client.appendChild(firstNameElement);
-			//lastName element
 			lastName = allClients.get(i).getLastname();
 			lastNameElement = document.createElement("lastname");
 			lastNameElement.appendChild(document.createTextNode(lastName));
 			client.appendChild(lastNameElement);
-			//address element
 			eMail = allClients.get(i).getEmail();
 			emailElement = document.createElement("email");
 			emailElement.appendChild(document.createTextNode(eMail));
@@ -280,5 +272,90 @@ public class XMLDemo {
 		}
 		
 		this.createXMLFile(document, XML_CLIENTS);
+	}
+
+	public Transaction parseTransaction(Element currentElement) {
+		System.out.println("avant");
+		Transaction transaction = new Transaction(UUID.randomUUID(), UUID.randomUUID(), 0, String.valueOf(ldt));
+		System.out.println("après");
+		try {
+			UUID clientID  = UUID.fromString(currentElement.getElementsByTagName("clientId").item(0).getTextContent());
+			System.out.println(clientID);
+			UUID productID = UUID.fromString(currentElement.getElementsByTagName("productId").item(0).getTextContent());
+			System.out.println(productID);
+			int numProduct = Integer.valueOf(currentElement.getElementsByTagName("numProducts").item(0).getTextContent());
+			System.out.println(numProduct);
+			String time    = currentElement.getElementsByTagName("time").item(0).getTextContent();
+			System.out.println(time);
+			transaction = new Transaction(clientID, productID, numProduct, time);
+		} catch(Exception ex) {
+			System.out.println("Something is wrong with the XML transaction element");
+			System.out.println("Problem is : " + ex.getMessage());
+		}
+		
+		return transaction;
+	}
+
+	public List<Transaction> getTransactions() {
+		Transaction currentTransaction = null;
+		LinkedList<Transaction> allTransactions = new LinkedList<Transaction>();
+
+		NodeList nodes = this.parseXMLFile(XML_TRANSACTIONS);
+		if (nodes == null) return allTransactions;
+		for (int i = 0; i<nodes.getLength(); i++) {
+			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE)   {
+				Element currentElement = (Element) nodes.item(i);
+				System.out.println("OOOKKKKK");
+				currentTransaction = parseTransaction(currentElement);
+				allTransactions.add(currentTransaction);
+			}  
+		}
+		
+		return allTransactions;
+	}
+	
+	
+	public void addTransaction(Transaction t) {
+		Document document = this.createXMLDocument();
+		if (document == null) return;
+		
+		Element root = document.createElement("transactions");
+		document.appendChild(root);
+		
+		Element transaction = document.createElement("transaction");
+		Element clientID = document.createElement("clientId");
+		clientID.appendChild(document.createTextNode(t.getClientId().toString()));
+		transaction.appendChild(clientID);
+		Element productID = document.createElement("productId");
+		productID.appendChild(document.createTextNode(t.getProductId().toString()));
+		transaction.appendChild(productID);
+		Element numProducts = document.createElement("numProducts");
+		numProducts.appendChild(document.createTextNode(String.valueOf(t.getNumProducts())));
+		transaction.appendChild(numProducts);
+		Element time = document.createElement("time");
+		time.appendChild(document.createTextNode(LocalDateTime.now().toString()));
+		transaction.appendChild(time);
+		root.appendChild(transaction);
+		System.out.println("Avant getTransactions");
+		List<Transaction> allTransactions = getTransactions();
+		System.out.println("Après getTransactions");
+		for (int i = 0; i < allTransactions.size(); i++) {
+			transaction = document.createElement("transaction");
+			clientID = document.createElement("clientID");
+			clientID.appendChild(document.createTextNode(allTransactions.get(i).getClientId().toString()));
+			transaction.appendChild(clientID);
+			productID = document.createElement("productID");
+			productID.appendChild(document.createTextNode(allTransactions.get(i).getProductId().toString()));
+			transaction.appendChild(productID);
+			numProducts = document.createElement("numProducts");
+			numProducts.appendChild(document.createTextNode(String.valueOf(allTransactions.get(i).getNumProducts())));
+			transaction.appendChild(numProducts);
+			time = document.createElement("time");
+			time.appendChild(document.createTextNode(allTransactions.get(i).getTime()));
+			transaction.appendChild(time);
+			root.appendChild(transaction);
+		}
+		
+		this.createXMLFile(document, XML_TRANSACTIONS);
 	}
 }
