@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <produits>
 	<livre>
-		<identifier>285ef887-d9ba-4cde-87bb-4ae133e329a7</identifier>
+		<identifier>da8a96b7-67ad-4073-9948-80c2a563179f</identifier>
 		<nom_livre>Hunger Games</nom_livre>
 		<author>Suzanne Collins</author>
 		<pages>374</pages>
@@ -11,7 +11,7 @@
 		<image>/bin/usr/Desktop</image>
 	</livre>
 	<livre>
-		<identifier>52a98723-d2c0-476e-8d13-e94ddcab9592</identifier>
+		<identifier>6f7817fe-8d01-49b3-afb8-065a11f97e4a</identifier>
 		<nom_livre>Harry Potter à l'école des sorciers</nom_livre>
 		<author>J. K. Rowling</author>
 		<pages>232</pages>
@@ -21,7 +21,7 @@
 		<image>/bin/usr/Desktop</image>
 	</livre>
 	<livre>
-		<identifier>6d2bce8a-e4b8-4e00-bcd4-199194c569f9</identifier>
+		<identifier>7baec9ce-b66e-401a-ae31-33a0aa7e1a31</identifier>
 		<nom_livre>Eragon</nom_livre>
 		<author>Christopher Paolini</author>
 		<pages>694</pages>
@@ -31,7 +31,7 @@
 		<image>/bin/usr/Desktop</image>
 	</livre>
 	<DVD>
-		<identifier>3df2173c-be84-43ea-baae-b608ce45e1fd</identifier>
+		<identifier>0f186309-9396-48cf-9c6b-9d291659cb8e</identifier>
 		<nom_DVD>Men In Black</nom_DVD>
 		<actors>Will Smith, Tommy Lee Jones</actors>
 		<duration>98</duration>
@@ -41,7 +41,7 @@
 		<image>/bin/usr/Desktop</image>
 	</DVD>
 	<DVD>
-		<identifier>8510a3ae-7458-471d-8816-74556ab6b896</identifier>
+		<identifier>6cc9dfe6-1d13-41cf-a30f-50fb04d864a4</identifier>
 		<nom_DVD>Le Seigneur des anneaux : La Communauté de l'anneau</nom_DVD>
 		<actors>Elijah Wood, Ian McKellen, Orlando Bloom, Viggo Mortensen</actors>
 		<duration>178</duration>
@@ -51,7 +51,7 @@
 		<image>/bin/usr/Desktop</image>
 	</DVD>
 	<DVD>
-		<identifier>8f3ced98-504f-4210-8aa2-8daa72514855</identifier>
+		<identifier>5a2f7db6-4725-4c18-aea5-f79a00e64a44</identifier>
 		<nom_DVD>Interstellar</nom_DVD>
 		<actors>Matthew McConaughey, Anne Hathaway, Micheal Caine, Jessica Chastain, Casey Affleck</actors>
 		<duration>169</duration>
@@ -61,21 +61,21 @@
 		<image>/bin/usr/Desktop</image>
 	</DVD>
 	<game>
-		<identifier>5d3cd53f-c565-4d4e-acc0-32686e565032</identifier>
+		<identifier>36079cd7-d9a3-41f0-9e8b-0df2e09f0b58</identifier>
 		<nom_jeu>Star Wars Jedi: Fallen Order</nom_jeu>
 		<genre>Action-Aventure</genre>
 		<platform>Pc, Xbox One, PS4</platform>
 		<price>64.99</price>
-		<stock>35</stock>
+		<stock>51</stock>
 		<image>/bin/usr/Desktop</image>
 	</game>
 	<game>
-		<identifier>6810d518-a02d-4ac7-a991-a0f16dcd3e92</identifier>
+		<identifier>2a91bace-ebee-4996-a7da-e19040caf542</identifier>
 		<nom_jeu>The Legend of Zelda : Breath of the Wild</nom_jeu>
 		<genre>Action-Aventure</genre>
 		<platform>Wii U, Nintendo Switch</platform>
 		<price>44.99</price>
-		<stock>1</stock>
+		<stock>29</stock>
 		<image>/bin/usr/Desktop</image>
 	</game>
 </produits>

@@ -18,9 +18,17 @@ public class Game extends Product {
     public Vector<String> getPlatform() {
         return platform;
     }
+
+    public String printPlatform() {
+        String str = new String();
+        for (int i = 0; i < platform.size() - 1; i++) {
+            str += platform.get(i) + ", ";
+        }
+        str+= platform.get(platform.size() - 1);
+        return str;
+    }
     
     public void printProduct() {
-        System.out.println("Type       : GAME");
         System.out.println("nom_jeu    : " + name);
         System.out.println("price      : " + price);
         System.out.println("uniqueID   : " + identifier);

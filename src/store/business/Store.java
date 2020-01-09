@@ -1,4 +1,5 @@
 import java.util.List;
+import java.awt.print.Book;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -63,12 +64,18 @@ public class Store {
     }
 
     public void addProduct(Product p) {
-        productList.add(p);
+        
     }
 
-    // public void addClient(Client c) {
-    //     clientList.add(c);
-    // }
+    public void decreaseProduct(Product p, int nbUnits) {
+        xmlDemo.decreaseStockProduct(p, nbUnits);
+        for (int i = 0; i < productList.size(); i++) {
+            if (p.getId() == productList.get(i).getId()) {
+                productList.get(i).decreaseStock(nbUnits);
+                System.out.println(productList.get(i).getStock());
+            }
+        }
+    }
 
     public void addClient(String firstname, String lastname, String email) {
         xmlDemo.addClient(firstname, lastname, email);
@@ -76,7 +83,6 @@ public class Store {
 
     public void addTransaction(Transaction t) {
         xmlDemo.addTransaction(t);
-        // System.out.println(xmlDemo.getTransactions());
     }
 
     public void addCategory(Product p, String cat) {

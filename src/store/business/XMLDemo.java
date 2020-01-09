@@ -83,7 +83,7 @@ public class XMLDemo {
 			String stock      = currentElement.getElementsByTagName("stock").item(0).getTextContent();
 			String image      = currentElement.getElementsByTagName("image").item(0).getTextContent();
 			String identifier = currentElement.getElementsByTagName("identifier").item(0).getTextContent();
-			UUID   uniqueID   = UUID.randomUUID();
+			UUID   uniqueID   = UUID.fromString(identifier);
 			book = new Book(nom_livre, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, author, Integer.valueOf(pages), language);
 			// book.printProduct();
 		} catch (Exception ex) {
@@ -107,7 +107,7 @@ public class XMLDemo {
 			String stock      = currentElement.getElementsByTagName("stock").item(0).getTextContent();
 			String image      = currentElement.getElementsByTagName("image").item(0).getTextContent();
 			String identifier = currentElement.getElementsByTagName("identifier").item(0).getTextContent();
-			UUID   uniqueID   = UUID.randomUUID();
+			UUID   uniqueID   = UUID.fromString(identifier);
 
 			actorsVect = new Vector<String>();
 			String[] allActors = actors.split(", ");
@@ -136,7 +136,7 @@ public class XMLDemo {
 			String price      = currentElement.getElementsByTagName("price").item(0).getTextContent();
 			String stock      = currentElement.getElementsByTagName("stock").item(0).getTextContent();
 			String image      = currentElement.getElementsByTagName("image").item(0).getTextContent();
-			UUID   uniqueID   = UUID.randomUUID();
+			UUID   uniqueID   = UUID.fromString(identifier);
 			
 			platformVect = new Vector<String>();
 			String[] allPlatform = platform.split(", ");
@@ -187,6 +187,107 @@ public class XMLDemo {
 
 		return allProducts;
 	}
+
+	public void decreaseStockProduct(Product p, int nbUnits) {
+		Document document = this.createXMLDocument();
+		if (document == null) return;
+
+		Element root = document.createElement("produits");
+		document.appendChild(root);
+		List<Product> allProducts = getProducts("tous");
+		for (int i = 0; i < allProducts.size(); i++) {
+			if (allProducts.get(i).getClass().getName() == "Book") {
+				Book b = (Book)allProducts.get(i);
+				Element book = document.createElement("livre");
+				Element identifier = document.createElement("identifier");
+				identifier.appendChild(document.createTextNode(allProducts.get(i).getId().toString()));
+				book.appendChild(identifier);
+				Element nom_livre = document.createElement("nom_livre");
+				nom_livre.appendChild(document.createTextNode(allProducts.get(i).getName()));
+				book.appendChild(nom_livre);
+				Element author = document.createElement("author");
+				author.appendChild(document.createTextNode(b.getAuthor()));
+				book.appendChild(author);
+				Element pages = document.createElement("pages");
+				pages.appendChild(document.createTextNode(String.valueOf(b.getPages())));
+				book.appendChild(pages);
+				Element language = document.createElement("language");
+				language.appendChild(document.createTextNode(b.getLanguage()));
+				book.appendChild(language);
+				Element price = document.createElement("price");
+				price.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getPrice())));
+				book.appendChild(price);
+				Element stock = document.createElement("stock");
+				if (p.getId() == b.getId()) stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock() - nbUnits)));
+				else stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock())));
+				book.appendChild(stock);
+				Element image = document.createElement("image");
+				image.appendChild(document.createTextNode(allProducts.get(i).getImage()));
+				book.appendChild(image);
+				root.appendChild(book);
+			} else if (allProducts.get(i).getClass().getName() == "DVD") {
+				DVD d = (DVD)allProducts.get(i);
+				Element dvd = document.createElement("DVD");
+				Element identifier = document.createElement("identifier");
+				identifier.appendChild(document.createTextNode(allProducts.get(i).getId().toString()));
+				dvd.appendChild(identifier);
+				Element nom_DVD = document.createElement("nom_DVD");
+				nom_DVD.appendChild(document.createTextNode(allProducts.get(i).getName()));
+				dvd.appendChild(nom_DVD);
+				Element actors = document.createElement("actors");
+				actors.appendChild(document.createTextNode(d.printActors()));
+				dvd.appendChild(actors);
+				Element duration = document.createElement("duration");
+				duration.appendChild(document.createTextNode(String.valueOf(d.getLength())));
+				dvd.appendChild(duration);
+				Element genre = document.createElement("genre");
+				genre.appendChild(document.createTextNode(d.getGenre()));
+				dvd.appendChild(genre);
+				Element price = document.createElement("price");
+				price.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getPrice())));
+				dvd.appendChild(price);
+				Element stock = document.createElement("stock");
+				if (p.getId() == d.getId()) stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock() - nbUnits)));
+				else stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock())));
+				dvd.appendChild(stock);
+				Element image = document.createElement("image");
+				image.appendChild(document.createTextNode(allProducts.get(i).getImage()));
+				dvd.appendChild(image);
+				root.appendChild(dvd);
+			} else if (allProducts.get(i).getClass().getName() == "Game") {
+				Game g = (Game)allProducts.get(i);
+				Element game = document.createElement("game");
+				Element identifier = document.createElement("identifier");
+				identifier.appendChild(document.createTextNode(allProducts.get(i).getId().toString()));
+				game.appendChild(identifier);
+				Element nom_jeu = document.createElement("nom_jeu");
+				nom_jeu.appendChild(document.createTextNode(allProducts.get(i).getName()));
+				game.appendChild(nom_jeu);
+				Element genre = document.createElement("genre");
+				genre.appendChild(document.createTextNode(g.getGenre()));
+				game.appendChild(genre);
+				Element platform = document.createElement("platform");
+				platform.appendChild(document.createTextNode(g.printPlatform()));
+				game.appendChild(platform);
+				Element price = document.createElement("price");
+				price.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getPrice())));
+				game.appendChild(price);
+				Element stock = document.createElement("stock");
+				System.out.println("p : " + p.getId());
+				System.out.println("g : " + g.getId());
+				if (p.getId().toString().equals(g.getId().toString())) stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock() - nbUnits)));
+				else stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock())));
+				
+				game.appendChild(stock);
+				Element image = document.createElement("image");
+				image.appendChild(document.createTextNode(allProducts.get(i).getImage()));
+				game.appendChild(image);
+				root.appendChild(game);
+			}
+		}
+		
+		this.createXMLFile(document, XML_PRODUCTS);
+	} 
 
 	public Client parseClient(Element currentElement) {
 		Client client = new Client("Prénom", "Nom", "example@example.com", UUID.randomUUID());
@@ -275,9 +376,7 @@ public class XMLDemo {
 	}
 
 	public Transaction parseTransaction(Element currentElement) {
-		System.out.println("avant");
 		Transaction transaction = new Transaction(UUID.randomUUID(), UUID.randomUUID(), 0, String.valueOf(ldt));
-		System.out.println("après");
 		try {
 			UUID clientID  = UUID.fromString(currentElement.getElementsByTagName("clientId").item(0).getTextContent());
 			System.out.println(clientID);
@@ -305,7 +404,6 @@ public class XMLDemo {
 		for (int i = 0; i<nodes.getLength(); i++) {
 			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE)   {
 				Element currentElement = (Element) nodes.item(i);
-				System.out.println("OOOKKKKK");
 				currentTransaction = parseTransaction(currentElement);
 				allTransactions.add(currentTransaction);
 			}  

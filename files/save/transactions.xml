@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<transactions>
+    <transaction>
+        <clientId>a0491c75-70dd-40a6-8d22-96b2942f1872</clientId>
+        <productId>c6632c7e-8699-4ecc-b75f-30c712106e76</productId>
+        <numProducts>6</numProducts>
+        <time>2020-01-09T22:24:02.250422</time>
+    </transaction>
+    <transaction>
+        <clientID>a0491c75-70dd-40a6-8d22-96b2942f1872</clientID>
+        <productID>4dd9b67a-6086-48fb-aee5-96f89a2e14d8</productID>
+        <numProducts>1</numProducts>
+        <time>2020-01-09T21:13:22.478459</time>
+    </transaction>
+</transactions>

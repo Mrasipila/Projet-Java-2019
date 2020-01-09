@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.ArrayList;
 
 public class StoreGUI implements ActionListener {
     private Store store;
@@ -60,17 +61,18 @@ public class StoreGUI implements ActionListener {
     private String     strEmail; 
 
     // PANEL BUY
-    private JLabel    nameBuyer;
-    private JLabel    titleBuyer;
-    private JLabel    nameArticle;
-    private JLabel    nbArticles;
-    private JPanel    clientBuy;
-    private JPanel    productBuy;
-    private JPanel    transactionPanel;
-    private JButton   buyBtn; 
-    private JComboBox numberProduct;
-    private JPanel    tmp;
-    private Object[]  number;
+    private JLabel            nameBuyer;
+    private JLabel            titleBuyer;
+    private JLabel            nameArticle;
+    private ArrayList<String> nb;
+    private JLabel            nbArticles;
+    private JPanel            clientBuy;
+    private JPanel            productBuy;
+    private JPanel            transactionPanel;
+    private JButton           buyBtn; 
+    private JComboBox         numberProduct;
+    private JPanel            tmp;
+    private String[]          number;
 
     public StoreGUI() {
         store = new Store("Tous");
@@ -146,13 +148,13 @@ public class StoreGUI implements ActionListener {
         strPrice                  = "Prix";
         strQuantity               = "Quantité";
         
-        infoOneProduct            = new JPanel(new BorderLayout());     // information d'un produit
-        JLabel currentTitle       = new JLabel("Produit courant :");    // titre de la partie
-        currentProductPanel       = new JPanel(new GridLayout(4, 1));   // Détail des caractéristiques du produit
-        titleProduct       = new JLabel(strTitle);                // texte
-        descriptionProduct = new JLabel(strDescription);          // texte
-        priceProduct       = new JLabel(strPrice);                 // texte
-        quantityProduct    = new JLabel(strQuantity);             // texte
+        infoOneProduct      = new JPanel(new BorderLayout());     // information d'un produit
+        JLabel currentTitle = new JLabel("Produit courant :");    // titre de la partie
+        currentProductPanel = new JPanel(new GridLayout(4, 1));   // Détail des caractéristiques du produit
+        titleProduct        = new JLabel(strTitle);                // texte
+        descriptionProduct  = new JLabel(strDescription);          // texte
+        priceProduct        = new JLabel(strPrice);                 // texte
+        quantityProduct     = new JLabel(strQuantity);             // texte
         infoOneProduct.add(currentTitle, BorderLayout.NORTH);
         currentProductPanel.add(titleProduct);
         currentProductPanel.add(descriptionProduct);
@@ -179,9 +181,10 @@ public class StoreGUI implements ActionListener {
         JPanel voidPanel             = new JPanel();
 
         // Les barres de recherche
-        JLabel titleClientName    = new JLabel("Prénom");
-        JLabel titleClientSurname = new JLabel("Nom");
-        JLabel titleClientEmail   = new JLabel("email");
+        currentClient = new Client("Prénom", "Nom", "email", UUID.randomUUID());
+        JLabel titleClientName    = new JLabel(currentClient.getFirstname());
+        JLabel titleClientSurname = new JLabel(currentClient.getLastname());
+        JLabel titleClientEmail   = new JLabel(currentClient.getEmail());
         searchNameClient          = new JTextField(20);
         searchSurnameClient       = new JTextField(20);
         searchEmailClient         = new JTextField(20);
@@ -215,7 +218,6 @@ public class StoreGUI implements ActionListener {
 
         clientPanel.setBorder(BorderFactory.createTitledBorder("Clients"));
         clientPanel.add(searchClientPanel);
-        //clientPanel.add(addClientPanel, FlowLayout.CENTER);
 
         infoClientPanel          = new JPanel(new BorderLayout());
         JLabel infoCurrentClient = new JLabel("Informations du client courant : ");
@@ -247,13 +249,14 @@ public class StoreGUI implements ActionListener {
         transactionPanel.setBorder(BorderFactory.createTitledBorder("Transactions"));
         transactionPanel.add(clientBuy, FlowLayout.LEFT);
 
-        productBuy          = new JPanel(new BorderLayout());
-        nameArticle         = new JLabel(strTitle);
-        nbArticles          = new JLabel("Nombre d'article :");
+        productBuy    = new JPanel(new BorderLayout());
+        nameArticle   = new JLabel(strTitle);
+        nbArticles    = new JLabel("Nombre d'article :");
 
-        number           = new Object[]{"0", "1", "2", "3", "4", "5"};
-        numberProduct    = new JComboBox<>(number);         // input
-        tmp              = new JPanel(new FlowLayout());
+        nb = new ArrayList<String>();
+        number = new String[] {"0"};
+        numberProduct = new JComboBox<>(number);
+        tmp           = new JPanel(new FlowLayout());
 
         productBuy.add(nameArticle, BorderLayout.NORTH);
         productBuy.add(tmp, BorderLayout.SOUTH);
@@ -281,14 +284,12 @@ public class StoreGUI implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         try {
-            // System.out.println(e.getActionCommand());
             switch (e.getActionCommand()) {
                 case "searchCat":
                     System.out.println("search Category");
                     System.out.println("catgegory : " + searchProduct.getSelectedItem());
                     updateProductsList();
-                    // code pour chercher la category du produit
-                    // --> methode qui recherche les produits d'une category (= trie sur les category dans le fichier XML)
+                    // store.decreaseProduct(new Product(), 1);
                     break;
 
                 case "searchClient":
@@ -297,10 +298,6 @@ public class StoreGUI implements ActionListener {
                     System.out.println("Nom    : " + searchSurnameClient.getText());
                     System.out.println("Email  : " + searchEmailClient.getText());
                     updateClientInfo();
-                    // System.out.println("clientInput : " + searchClient.getText());
-                    
-                    // code pour chercher le client à partir d'un nom ou prénom
-                    // --> filtre des personnes stocker dans le fichier XML à partir de l'entré du texte
                     break;
 
                 case "addClient":
@@ -313,15 +310,12 @@ public class StoreGUI implements ActionListener {
 
                 case "buyProducts":
                     System.out.println("buy products");
-                    // currentClient.printClient();
-                    // currentProduct.printProduct();
-                    Transaction t = new Transaction(currentClient.getId(), currentProduct.getId(), 1, LocalDateTime.now().toString());
-                    store.addTransaction(t);
-                    // conclusion de la transaction
-                    // check que les différentes informations correspondent bien à une situation possible
-                    // check des stock
-                    // check du client
-                    // check de l'existence du produit et du client
+                    Transaction t = new Transaction(currentClient.getId(), currentProduct.getId(), Integer.valueOf(numberProduct.getSelectedItem().toString()), LocalDateTime.now().toString());
+                    if (Integer.valueOf(numberProduct.getSelectedItem().toString()) <= currentProduct.getStock()) {
+                        store.addTransaction(t);
+                        store.decreaseProduct(currentProduct, Integer.valueOf(numberProduct.getSelectedItem().toString()));
+                        updateProductInfo();
+                    }
                     break;
 
                 // System.out.println(listProducts.getSelectedIndex());
@@ -338,9 +332,6 @@ public class StoreGUI implements ActionListener {
         for (int i = 0; i < store.getProducts().size(); i++) 
             listModel.addElement(store.getProducts().get(i).getName());
 
-        // indexProduct = 0;
-        // currentProductName = store.getProducts().get(0).getName();
-        // listProducts.addListSelectionListener(listener);
         listScroll.updateUI();
         infoProductsPanel.updateUI();
     }
@@ -349,8 +340,7 @@ public class StoreGUI implements ActionListener {
         currentProductPanel.removeAll();
         productBuy.removeAll();
         // System.out.println("currentProductName : " + currentProductName);
-        currentProduct = getCurrentProduct(currentProductName);
-        System.out.println(currentProduct);
+        currentProduct     = getCurrentProduct(currentProductName);
         strTitle           = currentProduct.getName();
         strPrice           = String.valueOf(currentProduct.getPrice());
         strQuantity        = String.valueOf(currentProduct.getStock());
@@ -365,8 +355,13 @@ public class StoreGUI implements ActionListener {
         productPanel.updateUI();
         currentProduct.printProduct();
 
-
+        for (int i = 0; i < currentProduct.getStock(); i++) nb.add(String.valueOf(i+1));
+        number        = new String[nb.size()];
+        for (int i = 0; i < number.length; i++) number[i] = nb.get(i);
+        numberProduct = new JComboBox<>(number);
+        tmp           = new JPanel(new FlowLayout());
         nameArticle = new JLabel(strTitle);
+
         productBuy.add(nameArticle, BorderLayout.NORTH);
         productBuy.add(tmp, BorderLayout.SOUTH);
         tmp.add(nbArticles);
@@ -374,9 +369,8 @@ public class StoreGUI implements ActionListener {
         transactionPanel.add(productBuy, FlowLayout.CENTER);
         productBuy.updateUI();
 
-        if (!currentClient.getLastname().equals("Nom") && !currentClient.getFirstname().equals("Prénom") && !currentClient.getEmail().equals("Aucun résultat") && currentProduct != null) {
+        if (!currentClient.getLastname().equals("Nom") && !currentClient.getFirstname().equals("Prénom") && !currentClient.getEmail().equals("Aucun résultat") && !currentProduct.getName().equals("Sans nom"))
             buyBtn.setEnabled(true);
-        }
 
     }
 
@@ -388,7 +382,10 @@ public class StoreGUI implements ActionListener {
         if (currentClient.getLastname().equals("Nom") && currentClient.getFirstname().equals("Prénom") && currentClient.getEmail().equals("Aucun résultat"))
             if (searchNameClient.getText().length() > 0 && searchSurnameClient.getText().length() > 0 && searchEmailClient.getText().length() > 0) 
                 addClientBtn.setEnabled(true); 
-        else addClientBtn.setEnabled(false);
+        else {
+            addClientBtn.setEnabled(false);
+            buyBtn.setEnabled(false);
+        } 
         
         strFirstname  = currentClient.getFirstname();
         strLastname   = currentClient.getLastname();
@@ -403,9 +400,9 @@ public class StoreGUI implements ActionListener {
         infoClientPanel.updateUI();
         currentClient.printClient();
 
-        if (currentClient != null && currentProduct != null) {
+        if (!currentClient.getLastname().equals("Nom") && !currentClient.getFirstname().equals("Prénom") && !currentClient.getEmail().equals("Aucun résultat") && currentProduct != null) 
             buyBtn.setEnabled(true);
-        }
+        
 
         nameBuyer = new JLabel(strLastname + " " + strFirstname);
         clientBuy.add(titleBuyer, BorderLayout.NORTH);
@@ -413,13 +410,12 @@ public class StoreGUI implements ActionListener {
         transactionPanel.add(clientBuy, FlowLayout.LEFT);
         clientBuy.updateUI();
         transactionPanel.updateUI();
-        // clientPanel.updateUI();
     }
 
     private Product getCurrentProduct(String name) {
         Product product = new Product("Sans nom", 0, UUID.randomUUID(), 0, "/");
         for (int i = 0; i < store.getProducts().size(); i++) {
-            if (name == store.getProducts().get(i).getName()) 
+            if (name.equals(store.getProducts().get(i).getName())) 
                 return store.getProducts().get(i);
         }
         return product;

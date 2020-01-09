@@ -17,6 +17,15 @@ public class DVD extends Product {
         return actors;
     }
 
+    public String printActors() {
+        String str = new String();
+        for (int i = 0; i < actors.size() - 1; i++) {
+            str += actors.get(i) + ", ";
+        }
+        str+= actors.get(actors.size() - 1);
+        return str;
+    }
+
     public int getLength() {
         return length;
     }
@@ -26,7 +35,6 @@ public class DVD extends Product {
     }
 
     public void printProduct() {
-        System.out.println("Type       : DVD");
         System.out.println("nom_DVD    : " + name);
         System.out.println("price      : " + price);
         System.out.println("uniqueID   : " + identifier);

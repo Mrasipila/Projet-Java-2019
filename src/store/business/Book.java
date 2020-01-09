@@ -25,7 +25,6 @@ public class Book extends Product {
     }
 
     public void printProduct() {
-        System.out.println("Type     : BOOK");
         System.out.println("nom      : " + name);
         System.out.println("price    : " + price);
         System.out.println("uniqueID : " + identifier);

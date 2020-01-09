@@ -1,3 +1,4 @@
+import java.util.Vector;
 import java.util.UUID;
 import java.util.List;
 
@@ -36,6 +37,10 @@ public class Product {
 
     public String getImage() {
         return image;
+    }
+
+    public void decreaseStock(int n) {
+        stock = stock - n;
     }
 
     public void printProduct() {}
