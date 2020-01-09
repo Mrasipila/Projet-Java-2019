@@ -61,6 +61,24 @@ public class XMLDemo {
 		return documentBuilder.newDocument();
 	}	
 
+	public List<String> getCategories(){
+
+		NodeList nodes = this.parseXMLFile(XML_PRODUCTS);
+		/*On récupère la première itération de tous
+		les noms des items stockés dans nodes
+		excepté les items appelés #text
+		et on les stocke dans une liste de string */
+		LinkedList<String> catList = new LinkedList<String>();
+		catList.add("Tous");
+		for (int i = 0; i<nodes.getLength(); i++) {
+			if(!catList.contains(nodes.item(i).getNodeName()) && nodes.item(i).getNodeName() != "#text"){
+				catList.add(nodes.item(i).getNodeName());
+			}
+		}
+		return catList;
+		// Si l'element courant (currentElement) n'est pas présent dans le tableau alors on l'ajoute !pasfait!
+	}
+
 	public void createXMLFile(Document document, String filePath) {
 		try {
 			DOMSource domSource = new DOMSource(document);
@@ -163,21 +181,21 @@ public class XMLDemo {
 		for (int i = 0; i<nodes.getLength(); i++) {
 			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE)   {
 				Element currentElement = (Element) nodes.item(i);
-				if (category == "tous") {
-					if (currentElement.getNodeName().equals("livre"))     currentProduct = parseLivre(currentElement);
-					else if (currentElement.getNodeName().equals("DVD"))  currentProduct = parseDVD(currentElement);
-					else if (currentElement.getNodeName().equals("game")) currentProduct = parseGame(currentElement);
+				if (category == "Tous") {
+					if (currentElement.getNodeName().equals("Livres"))    currentProduct = parseLivre(currentElement);
+					else if (currentElement.getNodeName().equals("DVDs")) currentProduct = parseDVD(currentElement);
+					else if (currentElement.getNodeName().equals("Jeux")) currentProduct = parseGame(currentElement);
 					allProducts.add(currentProduct);
 				} else {
-					if (currentElement.getNodeName().equals("livre")     && category == "livre") {
+					if (currentElement.getNodeName().equals("Livres")   && category == "Livres") {
 						currentProduct = parseLivre(currentElement);
 						allProducts.add(currentProduct);
 					} 
-					else if (currentElement.getNodeName().equals("DVD")  && category == "DVD")   {
+					else if (currentElement.getNodeName().equals("DVDs") && category == "DVDs")   {
 						currentProduct = parseDVD(currentElement);
 						allProducts.add(currentProduct);
 					} 
-					else if (currentElement.getNodeName().equals("game") && category == "game")  {
+					else if (currentElement.getNodeName().equals("Jeux") && category == "Jeux")  {
 						currentProduct = parseGame(currentElement);
 						allProducts.add(currentProduct);
 					} 
@@ -254,9 +272,9 @@ public class XMLDemo {
 				image.appendChild(document.createTextNode(allProducts.get(i).getImage()));
 				dvd.appendChild(image);
 				root.appendChild(dvd);
-			} else if (allProducts.get(i).getClass().getName() == "Game") {
+			} else if (allProducts.get(i).getClass().getName() == "Jeux") {
 				Game g = (Game)allProducts.get(i);
-				Element game = document.createElement("game");
+				Element game = document.createElement("Jeux");
 				Element identifier = document.createElement("identifier");
 				identifier.appendChild(document.createTextNode(allProducts.get(i).getId().toString()));
 				game.appendChild(identifier);

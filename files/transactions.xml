@@ -1,4 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<transactions>
-    
-</transactions>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><transactions><transaction><clientId>a0491c75-70dd-40a6-8d22-96b2942f1872</clientId><productId>52a98723-d2c0-476e-8d13-e94ddcab9592</productId><numProducts>11</numProducts><time>2020-01-10T00:48:13.313104</time></transaction><transaction><clientID>a0491c75-70dd-40a6-8d22-96b2942f1872</clientID><productID>6810d518-a02d-4ac7-a991-a0f16dcd3e92</productID><numProducts>1</numProducts><time>2020-01-10T00:19:02.243688</time></transaction></transactions>

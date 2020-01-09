@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.ArrayList;
+import java.util.*;
 
 public class StoreGUI implements ActionListener {
     private Store store;
@@ -89,8 +90,15 @@ public class StoreGUI implements ActionListener {
 
         JPanel searchPanel = new JPanel(new BorderLayout());    // Panneau qui contient la définition du choix du produit
         JLabel titleSearch = new JLabel("Catégorie Produit");   // titre
-        String[] categories = {"Tous", "DVDs", "Livres", "Jeux Vidéo"};
-        searchProduct      = new JComboBox<>(categories);         // input
+        // String[] categories = {"Tous", "DVDs", "Livres", "Jeux Vidéo"};
+        // searchProduct      = new JComboBox<>(categories);         // input
+
+        List<String> catl = store.getCategories();
+        Object[] objectArray = catl.toArray();
+        String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+        System.out.println(Arrays.toString(catl.toArray()));
+        searchProduct = new JComboBox<>(stringArray);
+
         searchPanel.add(titleSearch, BorderLayout.NORTH);       // insertion
         searchPanel.add(searchProduct, BorderLayout.SOUTH);     // insertion
 
@@ -143,10 +151,10 @@ public class StoreGUI implements ActionListener {
         productPanel.add(infoProductsPanel, FlowLayout.LEFT);
         productPanel.setBorder(BorderFactory.createTitledBorder("Produits"));
 
-        strTitle                  = "Titre produit";
-        strDescription            = "Description";
-        strPrice                  = "Prix";
-        strQuantity               = "Quantité";
+        strTitle            = "Titre produit";
+        strDescription      = "Description";
+        strPrice            = "Prix";
+        strQuantity         = "Quantité";
         
         infoOneProduct      = new JPanel(new BorderLayout());     // information d'un produit
         JLabel currentTitle = new JLabel("Produit courant :");    // titre de la partie
@@ -165,7 +173,7 @@ public class StoreGUI implements ActionListener {
         productPanel.add(infoOneProduct);
 
         JPanel imgProductPanel = new JPanel(new BorderLayout());        // Panneau qui contient l'image
-        imgProduct = new JLabel(new ImageIcon("files/product.jpg"));    // Chargement de l'image
+        imgProduct             = new JLabel(new ImageIcon("files/product.jpg"));    // Chargement de l'image
         imgProductPanel.add(imgProduct);
         productPanel.add(imgProductPanel);
         center.add(productPanel);
@@ -239,10 +247,10 @@ public class StoreGUI implements ActionListener {
         center.add(clientPanel);
 
         // INSERTION DE LA PARTIE TRANSACTION
-        transactionPanel  = new JPanel(new FlowLayout());
-        clientBuy         = new JPanel(new BorderLayout());
-        titleBuyer        = new JLabel("Nom du client courant");
-        nameBuyer         = new JLabel(strLastname + " " + strFirstname);
+        transactionPanel = new JPanel(new FlowLayout());
+        clientBuy        = new JPanel(new BorderLayout());
+        titleBuyer       = new JLabel("Nom du client courant");
+        nameBuyer        = new JLabel(strLastname + " " + strFirstname);
 
         clientBuy.add(titleBuyer, BorderLayout.NORTH);
         clientBuy.add(nameBuyer, BorderLayout.SOUTH);
@@ -253,8 +261,8 @@ public class StoreGUI implements ActionListener {
         nameArticle   = new JLabel(strTitle);
         nbArticles    = new JLabel("Nombre d'article :");
 
-        nb = new ArrayList<String>();
-        number = new String[] {"0"};
+        nb            = new ArrayList<String>();
+        number        = new String[] {"0"};
         numberProduct = new JComboBox<>(number);
         tmp           = new JPanel(new FlowLayout());
 
@@ -289,7 +297,6 @@ public class StoreGUI implements ActionListener {
                     System.out.println("search Category");
                     System.out.println("catgegory : " + searchProduct.getSelectedItem());
                     updateProductsList();
-                    // store.decreaseProduct(new Product(), 1);
                     break;
 
                 case "searchClient":
@@ -317,8 +324,6 @@ public class StoreGUI implements ActionListener {
                         updateProductInfo();
                     }
                     break;
-
-                // System.out.println(listProducts.getSelectedIndex());
             }
         } catch(Exception ex) {
             System.out.println(ex.getMessage());
@@ -339,14 +344,13 @@ public class StoreGUI implements ActionListener {
     private void updateProductInfo() {
         currentProductPanel.removeAll();
         productBuy.removeAll();
-        // System.out.println("currentProductName : " + currentProductName);
         currentProduct     = getCurrentProduct(currentProductName);
         strTitle           = currentProduct.getName();
         strPrice           = String.valueOf(currentProduct.getPrice());
         strQuantity        = String.valueOf(currentProduct.getStock());
-        titleProduct       = new JLabel(strTitle);                // texte
-        priceProduct       = new JLabel(strPrice + "€");                 // texte
-        quantityProduct    = new JLabel(strQuantity + " unité(s)");             // texte
+        titleProduct       = new JLabel(strTitle);                  // texte
+        priceProduct       = new JLabel(strPrice + "€");            // texte
+        quantityProduct    = new JLabel(strQuantity + " unité(s)"); // texte
         currentProductPanel.add(titleProduct);
         currentProductPanel.add(priceProduct);
         currentProductPanel.add(quantityProduct);
@@ -356,11 +360,11 @@ public class StoreGUI implements ActionListener {
         currentProduct.printProduct();
 
         for (int i = 0; i < currentProduct.getStock(); i++) nb.add(String.valueOf(i+1));
-        number        = new String[nb.size()];
+        number = new String[nb.size()];
         for (int i = 0; i < number.length; i++) number[i] = nb.get(i);
         numberProduct = new JComboBox<>(number);
         tmp           = new JPanel(new FlowLayout());
-        nameArticle = new JLabel(strTitle);
+        nameArticle   = new JLabel(strTitle);
 
         productBuy.add(nameArticle, BorderLayout.NORTH);
         productBuy.add(tmp, BorderLayout.SOUTH);

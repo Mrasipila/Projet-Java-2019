@@ -20,14 +20,20 @@ public class Store {
     }
 
     private String getCategory(String category) {
-        if (category == "Tous")   return "tous";
-        if (category == "DVDs")   return "DVD";
-        if (category == "Livres") return "livre";
-        else return "game";
+        if (category == "Tous")       return "tous";
+        if (category == "DVDs")       return "DVD";
+        if (category == "Livres")     return "livre";
+        if (category == "Jeux Vidéo") return "game";
+        else return category;
+    }
+
+    public List<String> getCategories() {
+        return xmlDemo.getCategories();
     }
 
     public void updateProducts(String category) {
-        productList = xmlDemo.getProducts(getCategory(category));
+        // productList = xmlDemo.getProducts(getCategory(category));
+        productList = xmlDemo.getProducts(category);
     }
 
     public Client getClient(String first, String last) {
