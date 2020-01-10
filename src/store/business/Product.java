@@ -14,8 +14,6 @@ public class Product {
     protected int stock;
     protected String image;
 
-
-    public Product() {}
     public Product(String name, double price, UUID identifier, int stock, String image) {
         this.name       = name;
         this.price      = price;

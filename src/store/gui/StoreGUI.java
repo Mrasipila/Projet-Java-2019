@@ -28,6 +28,7 @@ public class StoreGUI implements ActionListener {
     private JPanel                   infoProductsPanel;
     private JPanel                   infoOneProduct;
     private JPanel                   currentProductPanel;
+    private JPanel                   imgProductPanel;
     private JLabel                   titleListProducts;
     private JLabel                   imgProduct;
     private JLabel                   titleProduct;
@@ -92,10 +93,10 @@ public class StoreGUI implements ActionListener {
         JPanel searchPanel = new JPanel(new BorderLayout());    // Panneau qui contient la définition du choix du produit
         JLabel titleSearch = new JLabel("Catégorie Produit");   // titre
 
-        List<String> catl = store.getCategories();
+        List<String> catl    = store.getCategories();
         Object[] objectArray = catl.toArray();
         String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-        searchProduct = new JComboBox<>(stringArray);
+        searchProduct        = new JComboBox<>(stringArray);
 
         searchPanel.add(titleSearch, BorderLayout.NORTH);       // insertion
         searchPanel.add(searchProduct, BorderLayout.SOUTH);     // insertion
@@ -141,8 +142,8 @@ public class StoreGUI implements ActionListener {
         });
         listScroll = new JScrollPane(listProducts);     // contenu de la liste
         listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        listScroll.setMaximumSize(new Dimension(500, 100));
-        listScroll.setPreferredSize(new Dimension(500, 100));
+        listScroll.setMaximumSize(new Dimension(500, 200));
+        listScroll.setPreferredSize(new Dimension(500, 200));
         titleListProducts = new JLabel("Les produits disponibles");  // text descriptif
 
         infoProductsPanel.add(titleListProducts, BorderLayout.NORTH);
@@ -172,8 +173,8 @@ public class StoreGUI implements ActionListener {
         infoOneProduct.setPreferredSize(new Dimension(400, 100));
         productPanel.add(infoOneProduct);
 
-        JPanel imgProductPanel = new JPanel(new BorderLayout());        // Panneau qui contient l'image
-        imgProduct             = new JLabel(new ImageIcon("files/product.jpg"));    // Chargement de l'image
+        imgProductPanel = new JPanel(new BorderLayout());        // Panneau qui contient l'image
+        imgProduct      = new JLabel(new ImageIcon());    // Chargement de l'image
         imgProductPanel.add(imgProduct);
         productPanel.add(imgProductPanel);
         center.add(productPanel);
@@ -189,7 +190,7 @@ public class StoreGUI implements ActionListener {
         JPanel voidPanel             = new JPanel();
 
         // Les barres de recherche
-        currentClient = new Client("Prénom", "Nom", "email", UUID.randomUUID());
+        currentClient             = new Client("Prénom", "Nom", "email", UUID.randomUUID());
         JLabel titleClientName    = new JLabel(currentClient.getFirstname());
         JLabel titleClientSurname = new JLabel(currentClient.getLastname());
         JLabel titleClientEmail   = new JLabel(currentClient.getEmail());
@@ -372,6 +373,7 @@ public class StoreGUI implements ActionListener {
     private void updateProductInfo() {
         currentProductPanel.removeAll();
         productBuy.removeAll();
+        imgProductPanel.removeAll();
         currentProduct     = getCurrentProduct(currentProductName);
         strTitle           = currentProduct.getName();
         strPrice           = String.valueOf(currentProduct.getPrice());
@@ -382,6 +384,10 @@ public class StoreGUI implements ActionListener {
         currentProductPanel.add(titleProduct);
         currentProductPanel.add(priceProduct);
         currentProductPanel.add(quantityProduct);
+        imgProductPanel = new JPanel(new BorderLayout());        // Panneau qui contient l'image
+        imgProduct      = new JLabel(new ImageIcon(currentProduct.getImage()));    // Chargement de l'image
+        imgProductPanel.add(imgProduct);
+        productPanel.add(imgProductPanel);
         
         infoOneProduct.updateUI();
         productPanel.updateUI();
