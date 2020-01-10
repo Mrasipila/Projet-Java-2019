@@ -90,10 +90,10 @@ public class StoreGUI implements ActionListener {
         // INSERTION DE LA PARTIE INFORMATION DE L'APPLICATION
         infoStore         = new JPanel(new FlowLayout());   // Définition de la ligne
         JPanel infoPanel  = new JPanel(new BorderLayout());  // Panneau qui contient logo + titre
-        JLabel titleStore = new JLabel("Amazon du pauvre"); // titre
-        imgStore          = new JLabel(new ImageIcon("files/logoShop.png")); // logo
-        infoPanel.add(titleStore, BorderLayout.NORTH);  // insertion du titre
-        infoPanel.add(imgStore, BorderLayout.SOUTH);    // insertion du logo
+        JLabel titleStore = new JLabel("MY MARKET PLACE"); // titre
+        imgStore          = new JLabel(new ImageIcon("files/logo.png")); // logo
+        infoPanel.add(titleStore, BorderLayout.SOUTH);  // insertion du titre
+        infoPanel.add(imgStore, BorderLayout.CENTER);    // insertion du logo
 
         JPanel searchPanel = new JPanel(new BorderLayout());    // Panneau qui contient la définition du choix du produit
         JLabel titleSearch = new JLabel("Catégorie Produit");   // titre
