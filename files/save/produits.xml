@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <produits>
-	<livre>
+	<Livres>
 		<identifier>da8a96b7-67ad-4073-9948-80c2a563179f</identifier>
 		<nom_livre>Hunger Games</nom_livre>
 		<author>Suzanne Collins</author>
@@ -9,8 +9,8 @@
 		<price>15.99</price>
 		<stock>35</stock>
 		<image>/bin/usr/Desktop</image>
-	</livre>
-	<livre>
+	</Livres>
+	<Livres>
 		<identifier>6f7817fe-8d01-49b3-afb8-065a11f97e4a</identifier>
 		<nom_livre>Harry Potter à l'école des sorciers</nom_livre>
 		<author>J. K. Rowling</author>
@@ -19,8 +19,8 @@
 		<price>19.95</price>
 		<stock>91</stock>
 		<image>/bin/usr/Desktop</image>
-	</livre>
-	<livre>
+	</Livres>
+	<Livres>
 		<identifier>7baec9ce-b66e-401a-ae31-33a0aa7e1a31</identifier>
 		<nom_livre>Eragon</nom_livre>
 		<author>Christopher Paolini</author>
@@ -29,8 +29,8 @@
 		<price>18.98</price>
 		<stock>12</stock>
 		<image>/bin/usr/Desktop</image>
-	</livre>
-	<DVD>
+	</Livres>
+	<DVDs>
 		<identifier>0f186309-9396-48cf-9c6b-9d291659cb8e</identifier>
 		<nom_DVD>Men In Black</nom_DVD>
 		<actors>Will Smith, Tommy Lee Jones</actors>
@@ -39,8 +39,8 @@
 		<price>10.0</price>
 		<stock>62</stock>
 		<image>/bin/usr/Desktop</image>
-	</DVD>
-	<DVD>
+	</DVDs>
+	<DVDs>
 		<identifier>6cc9dfe6-1d13-41cf-a30f-50fb04d864a4</identifier>
 		<nom_DVD>Le Seigneur des anneaux : La Communauté de l'anneau</nom_DVD>
 		<actors>Elijah Wood, Ian McKellen, Orlando Bloom, Viggo Mortensen</actors>
@@ -49,8 +49,8 @@
 		<price>12.9</price>
 		<stock>25</stock>
 		<image>/bin/usr/Desktop</image>
-	</DVD>
-	<DVD>
+	</DVDs>
+	<DVDs>
 		<identifier>5a2f7db6-4725-4c18-aea5-f79a00e64a44</identifier>
 		<nom_DVD>Interstellar</nom_DVD>
 		<actors>Matthew McConaughey, Anne Hathaway, Micheal Caine, Jessica Chastain, Casey Affleck</actors>
@@ -59,8 +59,8 @@
 		<price>14.99</price>
 		<stock>70</stock>
 		<image>/bin/usr/Desktop</image>
-	</DVD>
-	<game>
+	</DVDs>
+	<Jeux>
 		<identifier>36079cd7-d9a3-41f0-9e8b-0df2e09f0b58</identifier>
 		<nom_jeu>Star Wars Jedi: Fallen Order</nom_jeu>
 		<genre>Action-Aventure</genre>
@@ -68,8 +68,8 @@
 		<price>64.99</price>
 		<stock>51</stock>
 		<image>/bin/usr/Desktop</image>
-	</game>
-	<game>
+	</Jeux>
+	<Jeux>
 		<identifier>2a91bace-ebee-4996-a7da-e19040caf542</identifier>
 		<nom_jeu>The Legend of Zelda : Breath of the Wild</nom_jeu>
 		<genre>Action-Aventure</genre>
@@ -77,5 +77,5 @@
 		<price>44.99</price>
 		<stock>29</stock>
 		<image>/bin/usr/Desktop</image>
-	</game>
+	</Jeux>
 </produits>

@@ -212,11 +212,11 @@ public class XMLDemo {
 
 		Element root = document.createElement("produits");
 		document.appendChild(root);
-		List<Product> allProducts = getProducts("tous");
+		List<Product> allProducts = getProducts("Tous");
 		for (int i = 0; i < allProducts.size(); i++) {
 			if (allProducts.get(i).getClass().getName() == "Book") {
 				Book b = (Book)allProducts.get(i);
-				Element book = document.createElement("livre");
+				Element book = document.createElement("Livres");
 				Element identifier = document.createElement("identifier");
 				identifier.appendChild(document.createTextNode(allProducts.get(i).getId().toString()));
 				book.appendChild(identifier);
@@ -245,7 +245,7 @@ public class XMLDemo {
 				root.appendChild(book);
 			} else if (allProducts.get(i).getClass().getName() == "DVD") {
 				DVD d = (DVD)allProducts.get(i);
-				Element dvd = document.createElement("DVD");
+				Element dvd = document.createElement("DVDs");
 				Element identifier = document.createElement("identifier");
 				identifier.appendChild(document.createTextNode(allProducts.get(i).getId().toString()));
 				dvd.appendChild(identifier);
@@ -272,7 +272,7 @@ public class XMLDemo {
 				image.appendChild(document.createTextNode(allProducts.get(i).getImage()));
 				dvd.appendChild(image);
 				root.appendChild(dvd);
-			} else if (allProducts.get(i).getClass().getName() == "Jeux") {
+			} else if (allProducts.get(i).getClass().getName() == "Game") {
 				Game g = (Game)allProducts.get(i);
 				Element game = document.createElement("Jeux");
 				Element identifier = document.createElement("identifier");
