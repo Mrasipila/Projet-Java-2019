@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.util.List;
 import java.util.LinkedList;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -115,7 +116,7 @@ public class XML {
 		} catch (TransformerException tfe) {
             tfe.printStackTrace();
         }
-		System.out.println("Done creating XML File");
+		System.out.println("Done creating XML File : " + filePath);
 	}
 
 	/**
@@ -136,7 +137,6 @@ public class XML {
 			String identifier = currentElement.getElementsByTagName("identifier").item(0).getTextContent();
 			UUID   uniqueID   = UUID.fromString(identifier);
 			book = new Book(nom_livre, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, author, Integer.valueOf(pages), language);
-			// book.printProduct();
 		} catch (Exception ex) {
 			System.out.println("Something is wrong with the XML client book element");
 			System.out.println("Problem is : " + ex.getMessage());
@@ -146,7 +146,9 @@ public class XML {
 	}
 
 	/**
-	* This method
+	* This method parse a DVD with it features
+	* @param currentElement current element when the xml file is parsing
+	* @return DVD dvd
 	*/
 	public DVD parseDVD(Element currentElement) {
 		Vector<String> actorsVect = new Vector<String>();
@@ -161,14 +163,13 @@ public class XML {
 			String stock      = currentElement.getElementsByTagName("stock").item(0).getTextContent();
 			String image      = currentElement.getElementsByTagName("image").item(0).getTextContent();
 			String identifier = currentElement.getElementsByTagName("identifier").item(0).getTextContent();
-			UUID   uniqueID   = UUID.fromString(identifier);
 
+			UUID   uniqueID   = UUID.fromString(identifier);
 			actorsVect = new Vector<String>();
 			String[] allActors = actors.split(", ");
 			for (String var : allActors) actorsVect.add(var);
 
 			dvd = new DVD(nom_DVD, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, actorsVect, Integer.valueOf(duration), genre);
-			// dvd.printProduct();
 
 		} catch(Exception ex) {
 			System.out.println("Something is wrong with the XML client DVD element");
@@ -178,6 +179,11 @@ public class XML {
 		return dvd;
 	}
 
+	/**
+	 * This method parse a Game with it features
+	 * @param currentElement current element when the xml file is parsing
+	 * @return Game game
+	 */
 	public Game parseGame(Element currentElement) {
 		Vector<String> platformVect = new Vector<String>();
 		platformVect.add(" ");
@@ -197,7 +203,6 @@ public class XML {
 			for (String var : allPlatform) platformVect.add(var);
 
 			game = new Game(nom_jeu, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, genre, platformVect);
-			// game.printProduct();
 
 		} catch(Exception ex) {
 			System.out.println("Something is wrong with the XML client game element");
@@ -207,6 +212,11 @@ public class XML {
 		return game;
 	}
 
+	/**
+	 * This method get all products from category. It is stock in a List of product
+	 * @param category First parameter which filter the products list
+	 * @return List<Product> allProducts : all products with the good category
+	 */
 	public List<Product> getProducts(String category) {
 		Product currentProduct = new Product("sans nom", 0.0, UUID.randomUUID(), 0, "/");
 		LinkedList<Product> allProducts = new LinkedList<Product>();
@@ -242,6 +252,11 @@ public class XML {
 		return allProducts;
 	}
 
+	/**
+	 * This method create a XML which is the new list of product with the new stock of product
+	 * @param p the product which it must decrease 
+	 * @param nbUnits the count which must be decrease of stock
+	 */
 	public void decreaseStockProduct(Product p, int nbUnits) {
 		Document document = this.createXMLDocument();
 		if (document == null) return;
@@ -327,8 +342,6 @@ public class XML {
 				price.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getPrice())));
 				game.appendChild(price);
 				Element stock = document.createElement("stock");
-				System.out.println("p : " + p.getId());
-				System.out.println("g : " + g.getId());
 				if (p.getId().toString().equals(g.getId().toString())) stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock() - nbUnits)));
 				else stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock())));
 
@@ -343,6 +356,11 @@ public class XML {
 		this.createXMLFile(document, XML_PRODUCTS);
 	}
 
+	/**
+	 * This method parse a Game with it features
+	 * @param currentElement current element when the xml file is parsing
+	 * @return Client client
+	 */
 	public Client parseClient(Element currentElement) {
 		Client client = new Client("Prénom", "Nom", "example@example.com", UUID.randomUUID());
 		try {
@@ -360,6 +378,10 @@ public class XML {
 		return client;
 	}
 
+	/**
+	 * This method get all clients from xml file. It is stock in a List of client
+	 * @return List<Client> allClients : return all clients 
+	 */
 	public List<Client> getClients() {
 		Client currentClient = null;
 		LinkedList<Client> allClients = new LinkedList<Client>();
@@ -378,6 +400,12 @@ public class XML {
 		return allClients;
 	}
 
+	/**
+	 * This method add a new client in the xml file.
+	 * @param firstname firstname of the new client
+	 * @param lastname lastname of the new client
+	 * @param email email of the new client
+	 */
 	public void addClient(String firstname, String lastname, String email) {
 		Document document = this.createXMLDocument();
 		if (document == null) return;
@@ -429,17 +457,18 @@ public class XML {
 		this.createXMLFile(document, XML_CLIENTS);
 	}
 
+	/**
+	 * This method parse a Transaction with it features
+	 * @param currentElement current element when the xml file is parsing
+	 * @return Transaction transaction
+	 */
 	public Transaction parseTransaction(Element currentElement) {
-		Transaction transaction = new Transaction(UUID.randomUUID(), UUID.randomUUID(), 0, String.valueOf(ldt));
+		Transaction transaction = new Transaction(UUID.randomUUID(), UUID.randomUUID(), 1, LocalDateTime.now().toString());
 		try {
 			UUID clientID  = UUID.fromString(currentElement.getElementsByTagName("clientId").item(0).getTextContent());
-			System.out.println(clientID);
 			UUID productID = UUID.fromString(currentElement.getElementsByTagName("productId").item(0).getTextContent());
-			System.out.println(productID);
 			int numProduct = Integer.valueOf(currentElement.getElementsByTagName("numProducts").item(0).getTextContent());
-			System.out.println(numProduct);
 			String time    = currentElement.getElementsByTagName("time").item(0).getTextContent();
-			System.out.println(time);
 			transaction = new Transaction(clientID, productID, numProduct, time);
 		} catch(Exception ex) {
 			System.out.println("Something is wrong with the XML transaction element");
@@ -449,13 +478,17 @@ public class XML {
 		return transaction;
 	}
 
+	/**
+	 * This method get all transactions from xml file. It is stock in a List of transactions
+	 * @return List<Transactions> allTransactions : return allTransactions from wml file
+	 */
 	public List<Transaction> getTransactions() {
 		Transaction currentTransaction = null;
 		LinkedList<Transaction> allTransactions = new LinkedList<Transaction>();
 
 		NodeList nodes = this.parseXMLFile(XML_TRANSACTIONS);
-		if (nodes == null) return allTransactions;
-		for (int i = 0; i<nodes.getLength(); i++) {
+		if (nodes == null) return null;
+		for (int i = 0; i< nodes.getLength(); i++) {
 			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE)   {
 				Element currentElement = (Element) nodes.item(i);
 				currentTransaction = parseTransaction(currentElement);
@@ -467,38 +500,40 @@ public class XML {
 	}
 
 
+	/**
+	 * This method add a new transaction in the xml file
+	 * @param t transaction which must be add in the xml file
+	 */
 	public void addTransaction(Transaction t) {
+		System.out.println();
 		Document document = this.createXMLDocument();
 		if (document == null) return;
 
 		Element root = document.createElement("transactions");
 		document.appendChild(root);
-
 		Element transaction = document.createElement("transaction");
-		Element clientID = document.createElement("clientId");
-		clientID.appendChild(document.createTextNode(t.getClientId().toString()));
-		transaction.appendChild(clientID);
-		Element productID = document.createElement("productId");
-		productID.appendChild(document.createTextNode(t.getProductId().toString()));
-		transaction.appendChild(productID);
+		Element clientId = document.createElement("clientId");
+		clientId.appendChild(document.createTextNode(t.getClientId().toString()));
+		transaction.appendChild(clientId);
+		Element productId = document.createElement("productId");
+		productId.appendChild(document.createTextNode(t.getProductId().toString()));
+		transaction.appendChild(productId);
 		Element numProducts = document.createElement("numProducts");
 		numProducts.appendChild(document.createTextNode(String.valueOf(t.getNumProducts())));
 		transaction.appendChild(numProducts);
 		Element time = document.createElement("time");
-		time.appendChild(document.createTextNode(LocalDateTime.now().toString()));
+		time.appendChild(document.createTextNode(t.getTime()));
 		transaction.appendChild(time);
 		root.appendChild(transaction);
-		System.out.println("Avant getTransactions");
 		List<Transaction> allTransactions = getTransactions();
-		System.out.println("Après getTransactions");
 		for (int i = 0; i < allTransactions.size(); i++) {
 			transaction = document.createElement("transaction");
-			clientID = document.createElement("clientID");
-			clientID.appendChild(document.createTextNode(allTransactions.get(i).getClientId().toString()));
-			transaction.appendChild(clientID);
-			productID = document.createElement("productID");
-			productID.appendChild(document.createTextNode(allTransactions.get(i).getProductId().toString()));
-			transaction.appendChild(productID);
+			clientId = document.createElement("clientId");
+			clientId.appendChild(document.createTextNode(allTransactions.get(i).getClientId().toString()));
+			transaction.appendChild(clientId);
+			productId = document.createElement("productId");
+			productId.appendChild(document.createTextNode(allTransactions.get(i).getProductId().toString()));
+			transaction.appendChild(productId);
 			numProducts = document.createElement("numProducts");
 			numProducts.appendChild(document.createTextNode(String.valueOf(allTransactions.get(i).getNumProducts())));
 			transaction.appendChild(numProducts);

@@ -77,6 +77,11 @@ public class StoreGUI implements ActionListener {
     private JPanel            tmp;
     private String[]          number;
 
+    /**
+    * <h1> Object StoreGUI </h1>
+    * This class creates the graphic interface
+    * @since   10-01-2020
+    */
     public StoreGUI() {
         store = new Store("Tous");
 
@@ -130,11 +135,8 @@ public class StoreGUI implements ActionListener {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     indexProduct       = listProducts.getAnchorSelectionIndex();
-                    System.out.println(indexProduct);
                     if (indexProduct >= 0) {
                         currentProductName = listProducts.getModel().getElementAt(indexProduct).toString();
-                        System.out.println("INDEX : " + indexProduct);
-                        System.out.println("NAME  : " + currentProductName);
                         updateProductInfo();
                     }
                 } 
@@ -291,28 +293,22 @@ public class StoreGUI implements ActionListener {
         frame.setVisible(true);
     }
 
+    /**
+     * This method do an update of the back and front end according to button pressed 
+     * @param e action effectuer lors d'un appuie de bouton
+     */
     public void actionPerformed(ActionEvent e) {
         try {
             switch (e.getActionCommand()) {
                 case "searchCat":
-                    System.out.println("search Category");
-                    System.out.println("catgegory : " + searchProduct.getSelectedItem());
                     updateProductsList();
                     break;
 
                 case "searchClient":
-                    System.out.println("search client");
-                    System.out.println("Prénom : " + searchNameClient.getText());
-                    System.out.println("Nom    : " + searchSurnameClient.getText());
-                    System.out.println("Email  : " + searchEmailClient.getText());
                     updateClientInfo();
                     break;
 
                 case "addClient":
-                    System.out.println("add client");
-                    System.out.println("Prénom : " + searchNameClient.getText());
-                    System.out.println("Nom    : " + searchSurnameClient.getText());
-                    System.out.println("Email  : " + searchEmailClient.getText());
                     if (searchNameClient.getText().length() > 0 && searchSurnameClient.getText().length() > 0 && searchEmailClient.getText().length() > 0)
                         store.addClient(searchNameClient.getText(), searchSurnameClient.getText(), searchEmailClient.getText());
                     else 
@@ -320,13 +316,13 @@ public class StoreGUI implements ActionListener {
                     break;
 
                 case "buyProducts":
-                    System.out.println("buy products");
                     Transaction t = new Transaction(currentClient.getId(), currentProduct.getId(), Integer.valueOf(numberProduct.getSelectedItem().toString()), LocalDateTime.now().toString());
                     if (Integer.valueOf(numberProduct.getSelectedItem().toString()) <= currentProduct.getStock()) {
                         store.addTransaction(t);
                         store.decreaseProduct(currentProduct, Integer.valueOf(numberProduct.getSelectedItem().toString()));
                         updateProductInfo();
                     }
+                    // store.getTransactions();
                     break;
             }
         } catch(Exception ex) {
@@ -335,6 +331,9 @@ public class StoreGUI implements ActionListener {
         }
     }
 
+    /**
+     * This method update the list of products according to the selected category
+     */
     private void updateProductsList() {
         infoProductsPanel.removeAll();
         listModel = new DefaultListModel<String>();
@@ -350,11 +349,8 @@ public class StoreGUI implements ActionListener {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     indexProduct       = listProducts.getAnchorSelectionIndex();
-                    System.out.println(indexProduct);
                     if (indexProduct >= 0) {
                         currentProductName = listProducts.getModel().getElementAt(indexProduct).toString();
-                        System.out.println("INDEX : " + indexProduct);
-                        System.out.println("NAME  : " + currentProductName);
                         updateProductInfo();
                     }
                 } 
@@ -370,6 +366,9 @@ public class StoreGUI implements ActionListener {
         infoProductsPanel.updateUI();
     }
 
+    /**
+     * This method update the current product's features
+     */
     private void updateProductInfo() {
         currentProductPanel.removeAll();
         productBuy.removeAll();
@@ -391,7 +390,6 @@ public class StoreGUI implements ActionListener {
         
         infoOneProduct.updateUI();
         productPanel.updateUI();
-        currentProduct.printProduct();
 
         for (int i = 0; i < currentProduct.getStock(); i++) nb.add(String.valueOf(i+1));
         number        = new String[nb.size()];
@@ -412,11 +410,13 @@ public class StoreGUI implements ActionListener {
 
     }
 
+    /**
+     * This method update the client information
+     */
     private void updateClientInfo() {
         infoClient.removeAll();
         clientBuy.removeAll();
         currentClient = store.getClient(searchNameClient.getText(), searchSurnameClient.getText());
-        System.out.println(searchNameClient.getText().length());
         if (currentClient.getLastname().equals("Nom") && currentClient.getFirstname().equals("Prénom") && currentClient.getEmail().equals("Aucun résultat"))
             if (searchNameClient.getText().length() > 0 && searchSurnameClient.getText().length() > 0 && searchEmailClient.getText().length() > 0) 
                 addClientBtn.setEnabled(true); 
@@ -436,7 +436,6 @@ public class StoreGUI implements ActionListener {
         infoClient.add(mail);
         infoClient.updateUI();
         infoClientPanel.updateUI();
-        currentClient.printClient();
 
         if (!currentClient.getLastname().equals("Nom") && !currentClient.getFirstname().equals("Prénom") && !currentClient.getEmail().equals("Aucun résultat") && currentProduct != null) 
             buyBtn.setEnabled(true);
@@ -450,6 +449,9 @@ public class StoreGUI implements ActionListener {
         transactionPanel.updateUI();
     }
 
+    /**
+     * This method enable to get the current product that we need from the name
+     */
     private Product getCurrentProduct(String name) {
         Product product = new Product("Sans nom", 0, UUID.randomUUID(), 0, "/");
         for (int i = 0; i < store.getProducts().size(); i++) {
@@ -459,7 +461,6 @@ public class StoreGUI implements ActionListener {
         return product;
     }
     
-
     public static void main(String[] args) {
         System.out.println("Starting project StoreGUI...");
         new StoreGUI();

@@ -1,1 +1,39 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><transactions><transaction><clientId>c3800d31-23ba-4ed2-9f28-7eca17f085f1</clientId><productId>7baec9ce-b66e-401a-ae31-33a0aa7e1a31</productId><numProducts>2</numProducts><time>2020-01-10T16:07:18.804607</time></transaction><transaction><clientID>922eb832-8eed-4c6b-b231-ef52d7e3a638</clientID><productID>36079cd7-d9a3-41f0-9e8b-0df2e09f0b58</productID><numProducts>11</numProducts><time>2020-01-10T10:24:33.306937</time></transaction><transaction><clientID>7e516582-abe2-42cf-bfc3-82593282fc62</clientID><productID>02f1cb09-17c1-4d6d-8c00-b6aaf275bbd4</productID><numProducts>0</numProducts><time>null</time></transaction><transaction><clientID>712aba0c-9444-44f5-9427-ba3ae7465787</clientID><productID>db4fce6d-b37f-431f-9ea1-68eb132d788e</productID><numProducts>0</numProducts><time>null</time></transaction></transactions>
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<transactions>
+    <transaction>
+        <clientId>c3800d31-23ba-4ed2-9f28-7eca17f085f1</clientId>
+        <productId>da8a96b7-67ad-4073-9948-80c2a563179f</productId>
+        <numProducts>1</numProducts>
+        <time>2020-01-10T20:48:13.495074</time>
+    </transaction>
+    <transaction>
+        <clientId>c3800d31-23ba-4ed2-9f28-7eca17f085f1</clientId>
+        <productId>7baec9ce-b66e-401a-ae31-33a0aa7e1a31</productId>
+        <numProducts>1</numProducts>
+        <time>2020-01-10T20:48:11.299004</time>
+    </transaction>
+    <transaction>
+        <clientId>c3800d31-23ba-4ed2-9f28-7eca17f085f1</clientId>
+        <productId>6f7817fe-8d01-49b3-afb8-065a11f97e4a</productId>
+        <numProducts>1</numProducts>
+        <time>2020-01-10T20:48:08.933810</time>
+    </transaction>
+    <transaction>
+        <clientId>c3800d31-23ba-4ed2-9f28-7eca17f085f1</clientId>
+        <productId>2a91bace-ebee-4996-a7da-e19040caf542</productId>
+        <numProducts>1</numProducts>
+        <time>2020-01-10T20:48:03.132482</time>
+    </transaction>
+    <transaction>
+        <clientId>c3800d31-23ba-4ed2-9f28-7eca17f085f1</clientId>
+        <productId>6cc9dfe6-1d13-41cf-a30f-50fb04d864a4</productId>
+        <numProducts>4</numProducts>
+        <time>2020-01-10T20:47:53.241780</time>
+    </transaction>
+    <transaction>
+        <clientId>c3800d31-23ba-4ed2-9f28-7eca17f085f1</clientId>
+        <productId>36079cd7-d9a3-41f0-9e8b-0df2e09f0b58</productId>
+        <numProducts>5</numProducts>
+        <time>2020-01-10T20:47:23.480717</time>
+    </transaction>
+</transactions>

@@ -14,6 +14,14 @@ public class Product {
     protected int stock;
     protected String image;
 
+    /**
+     * This is the constructor of the class Product
+     * @param name String Name of the product
+     * @param price Double price of the product
+     * @param identifier UUID identifier of the product
+     * @param stock int stock of the product
+     * @param image String image of product --> path of the image
+     */
     public Product(String name, double price, UUID identifier, int stock, String image) {
         this.name       = name;
         this.price      = price;

@@ -29,8 +29,8 @@ public class Store {
         xml             = new XML();
         productList     = xml.getProducts(getCategory(category));      // initialisation de la list
         clientList      = xml.getClients();                            // initialisation de la list
-        categories      = xml.getCategories();                         // initialisation de la HashMap
-        transactionList = null;                                            // initialisation de la list
+        transactionList = xml.getTransactions();
+        categories      = xml.getCategories();                         // initialisation de la list
     }
 
     /**
@@ -56,6 +56,22 @@ public class Store {
     }
 
     /**
+    * This method adds a transaction to the xml file
+    * @param t this is the first parameter of the transaction you want to add
+    */
+    public void addTransaction(Transaction t) {
+        xml.addTransaction(t);
+    }
+
+    /**
+     * ReturnThis method return all transactions in xml file
+     * @return List<Transaction> all transactions in xml file
+     */
+    public List<Transaction> getTransactions() {
+        return transactionList;
+    } 
+
+    /**
     * This method gets you the category generated automaticaly from xml file
     * @param category the category that you want to get the list of.
     * @return List<String> of all the products of the selected category
@@ -74,9 +90,6 @@ public class Store {
         Client client = new Client("Prénom", "Nom", "Aucun résultat", UUID.randomUUID());
         List<Client> clients = xml.getClients();
         for (int i = 0; i < clients.size(); i++) {
-            System.out.println(clients.get(i).getLastname().toLowerCase());
-            System.out.println(last.toLowerCase());
-            clients.get(i).printClient();
             if (clients.get(i).getFirstname().toLowerCase().equals(first.toLowerCase()) && clients.get(i).getLastname().toLowerCase().equals(last.toLowerCase())) client = clients.get(i);
         }
         return client;
@@ -127,7 +140,6 @@ public class Store {
         for (int i = 0; i < productList.size(); i++) {
             if (p.getId() == productList.get(i).getId()) {
                 productList.get(i).decreaseStock(nbUnits);
-                System.out.println(productList.get(i).getStock());
             }
         }
     }
@@ -140,13 +152,5 @@ public class Store {
     */
     public void addClient(String firstname, String lastname, String email) {
         xml.addClient(firstname, lastname, email);
-    }
-
-    /**
-    * This method adds a transaction to the xml file
-    * @param t this is the first parameter of the transaction you want to add
-    */
-    public void addTransaction(Transaction t) {
-        xml.addTransaction(t);
     }
 }
