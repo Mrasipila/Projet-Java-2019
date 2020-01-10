@@ -28,6 +28,7 @@ public class StoreGUI implements ActionListener {
     private JPanel                   infoProductsPanel;
     private JPanel                   infoOneProduct;
     private JPanel                   currentProductPanel;
+    private JLabel                   titleListProducts;
     private JLabel                   imgProduct;
     private JLabel                   titleProduct;
     private JLabel                   descriptionProduct;
@@ -96,7 +97,6 @@ public class StoreGUI implements ActionListener {
         List<String> catl = store.getCategories();
         Object[] objectArray = catl.toArray();
         String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-        System.out.println(Arrays.toString(catl.toArray()));
         searchProduct = new JComboBox<>(stringArray);
 
         searchPanel.add(titleSearch, BorderLayout.NORTH);       // insertion
@@ -125,15 +125,12 @@ public class StoreGUI implements ActionListener {
         listProducts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         listProducts.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         listProducts.setVisibleRowCount(-1);
-        listScroll = new JScrollPane(listProducts);     // contenu de la liste
-        listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        listScroll.setMaximumSize(new Dimension(500, 100));
-        listScroll.setPreferredSize(new Dimension(500, 100));
         listProducts.addListSelectionListener(new ListSelectionListener(){
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     indexProduct       = listProducts.getAnchorSelectionIndex();
+                    System.out.println(indexProduct);
                     if (indexProduct >= 0) {
                         currentProductName = listProducts.getModel().getElementAt(indexProduct).toString();
                         System.out.println("INDEX : " + indexProduct);
@@ -143,7 +140,11 @@ public class StoreGUI implements ActionListener {
                 } 
             }
         });
-        JLabel titleListProducts = new JLabel("Les produits disponibles");  // text descriptif
+        listScroll = new JScrollPane(listProducts);     // contenu de la liste
+        listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        listScroll.setMaximumSize(new Dimension(500, 100));
+        listScroll.setPreferredSize(new Dimension(500, 100));
+        titleListProducts = new JLabel("Les produits disponibles");  // text descriptif
 
         infoProductsPanel.add(titleListProducts, BorderLayout.NORTH);
         infoProductsPanel.add(listScroll, BorderLayout.CENTER);
@@ -332,12 +333,44 @@ public class StoreGUI implements ActionListener {
     }
 
     private void updateProductsList() {
-        listModel.clear();
+        infoProductsPanel.removeAll();
+        // listModel.clear();
+        listModel = new DefaultListModel<String>();
+        // listProducts.clearSelection();
+        // listScroll.removeAll();
+        // listModel.clear();
+        // for (int i = 0; i < listModel.getSize(); i++) 
+        // listModel.removeAllElements();
         store.updateProducts(searchProduct.getSelectedItem().toString());
         for (int i = 0; i < store.getProducts().size(); i++) 
             listModel.addElement(store.getProducts().get(i).getName());
-
+        // listModel.removeElementAt(0);
+        listProducts = new JList<String>(listModel);
+        listProducts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        listProducts.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        listProducts.setVisibleRowCount(-1);
+        listProducts.addListSelectionListener(new ListSelectionListener(){
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    indexProduct       = listProducts.getAnchorSelectionIndex();
+                    System.out.println(indexProduct);
+                    if (indexProduct >= 0) {
+                        currentProductName = listProducts.getModel().getElementAt(indexProduct).toString();
+                        System.out.println("INDEX : " + indexProduct);
+                        System.out.println("NAME  : " + currentProductName);
+                        updateProductInfo();
+                    }
+                } 
+            }
+        });
+        listScroll   = new JScrollPane(listProducts);
+        listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        listScroll.setMaximumSize(new Dimension(500, 100));
+        listScroll.setPreferredSize(new Dimension(500, 100));
         listScroll.updateUI();
+        infoProductsPanel.add(titleListProducts, BorderLayout.NORTH);
+        infoProductsPanel.add(listScroll, BorderLayout.CENTER);
         infoProductsPanel.updateUI();
     }
 
