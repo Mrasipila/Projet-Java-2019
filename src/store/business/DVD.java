@@ -25,7 +25,7 @@ public class DVD extends Product {
     * @param image This is the fifth parameter and image of the DVD
     * @param actors  This is sixth parameter and actors of the DVD
     * @param length This is seventh parameter and length of the DVD
-    * @param genre This is eighth parameter and genre of the DVD
+    * @param genre This is eighth parameter and gender of the DVD
     */
     public DVD(String name, double price, UUID identifier, int stock, String image, Vector<String> actors, int length, String genre) {
         super(name, price, identifier, stock, image);

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <clients>
     <client>
-        <uniqueID>a0491c75-70dd-40a6-8d22-96b2942f1872</uniqueID>
+        <uniqueID>c3800d31-23ba-4ed2-9f28-7eca17f085f1</uniqueID>
         <firstname>Jérémy</firstname>
         <lastname>Tourari</lastname>
         <email>tourari@et.esiea.fr</email>
     </client>
     <client>
-        <uniqueID>32d06f5c-92e6-451e-8d2e-b31cd71d45eb</uniqueID>
+        <uniqueID>922eb832-8eed-4c6b-b231-ef52d7e3a638</uniqueID>
         <firstname>Sofiane</firstname>
         <lastname>Serkesti</lastname>
         <email>serkesti@et.esiea.fr</email>
     </client>
     <client>
-        <uniqueID>afda6a55-ee69-4290-a633-590aee5747f3</uniqueID>
+        <uniqueID>74553540-453e-4a63-8dcc-97f0319f5998</uniqueID>
         <firstname>Meysan</firstname>
         <lastname>Kanzari</lastname>
         <email>kanzari@et.esiea.fr</email>

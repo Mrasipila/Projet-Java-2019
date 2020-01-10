@@ -3,6 +3,7 @@ import java.awt.print.Book;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
+import java.util.Arrays;
 
 /**
 * <h1> Object Store </h1>
@@ -12,24 +13,24 @@ import java.util.UUID;
 */
 
 public class Store {
-    private XMLDemo xmlDemo;
-    private List<Product>                  productList;
-    private List<Client>                   clientList;
-    private List<Transaction>              transactionList;
-    private HashMap<String, List<Product>> categories;
+    private XML xml;
+    private List<Product>     productList;
+    private List<Client>      clientList;
+    private List<Transaction> transactionList;
+    private List<String>      categories;
 
     /**
     * This constructor initialises the basic informations of our Store.
     * Including all our clients, transaction list and products.
-    * @param category This is the first parameter and name of the category,
-     ["Tous","DVDs","Livres","Jeux-Video"]
+    * @param category This is the first parameter and name of the category
+    * ["Tous","DVDs","Livres","Jeux"]
     */
     public Store(String category) {
-        xmlDemo         = new XMLDemo();
-        productList     = xmlDemo.getProducts(getCategory(category));      // initialisation de la list
-        clientList      = xmlDemo.getClients();            // initialisation de la list
-        transactionList = null;                     // initialisation de la list
-        categories      = null;                     // initialisation de la HashMap
+        xml             = new XML();
+        productList     = xml.getProducts(getCategory(category));      // initialisation de la list
+        clientList      = xml.getClients();                            // initialisation de la list
+        categories      = xml.getCategories();                         // initialisation de la HashMap
+        transactionList = null;                                            // initialisation de la list
     }
 
     /**
@@ -51,7 +52,7 @@ public class Store {
     * @return List<String> containing the category of all the products present in our xml file.
     */
     public List<String> getCategories() {
-        return xmlDemo.getCategories();
+        return categories;
     }
 
     /**
@@ -60,8 +61,7 @@ public class Store {
     * @return List<String> of all the products of the selected category
     */
     public void updateProducts(String category) {
-        // productList = xmlDemo.getProducts(getCategory(category));
-        productList = xmlDemo.getProducts(category);
+        productList = xml.getProducts(category);
     }
 
     /**
@@ -72,13 +72,12 @@ public class Store {
     */
     public Client getClient(String first, String last) {
         Client client = new Client("Prénom", "Nom", "Aucun résultat", UUID.randomUUID());
-        List<Client> clients = xmlDemo.getClients();
+        List<Client> clients = xml.getClients();
         for (int i = 0; i < clients.size(); i++) {
             System.out.println(clients.get(i).getLastname().toLowerCase());
             System.out.println(last.toLowerCase());
             clients.get(i).printClient();
             if (clients.get(i).getFirstname().toLowerCase().equals(first.toLowerCase()) && clients.get(i).getLastname().toLowerCase().equals(last.toLowerCase())) client = clients.get(i);
-            else if (clients.get(i).getLastname().toLowerCase().equals(last.toLowerCase())) client = clients.get(i);
         }
         return client;
     }
@@ -117,10 +116,6 @@ public class Store {
         }
     }
 
-    public void addProduct(Product p) {
-
-    }
-
     /**
     * This method decreases the stock of selected product
     * @param p this is the first paramater of the product you want to decrease the stock
@@ -128,7 +123,7 @@ public class Store {
     of product you want to remove from the store
     */
     public void decreaseProduct(Product p, int nbUnits) {
-        xmlDemo.decreaseStockProduct(p, nbUnits);
+        xml.decreaseStockProduct(p, nbUnits);
         for (int i = 0; i < productList.size(); i++) {
             if (p.getId() == productList.get(i).getId()) {
                 productList.get(i).decreaseStock(nbUnits);
@@ -144,7 +139,7 @@ public class Store {
     * @param email this is the third paramater of the email of the new client
     */
     public void addClient(String firstname, String lastname, String email) {
-        xmlDemo.addClient(firstname, lastname, email);
+        xml.addClient(firstname, lastname, email);
     }
 
     /**
@@ -152,10 +147,6 @@ public class Store {
     * @param t this is the first parameter of the transaction you want to add
     */
     public void addTransaction(Transaction t) {
-        xmlDemo.addTransaction(t);
-    }
-
-    public void addCategory(Product p, String cat) {
-        categories.keySet();
+        xml.addTransaction(t);
     }
 }

@@ -22,7 +22,7 @@ public class Game extends Product {
     * @param identifier This is the third parameter and id of the Game
     * @param stock  This is the fourth parameter and stock of the Game
     * @param image This is the fifth parameter and image of the Game
-    * @param genre  This is sixth parameter and genre of the Game
+    * @param genre  This is sixth parameter and gender of the Game
     * @param platform This is seventh parameter and platform of the Game
     */
     public Game(String name, double price, UUID identifier, int stock, String image, String genre, Vector<String> platform) {
@@ -32,7 +32,7 @@ public class Game extends Product {
     }
 
     /**
-    * This is the method that gets you the genre of the Game
+    * This is the method that gets you the gender of the Game
     * @return String This return the genre of the Game
     */
     public String getGenre() {

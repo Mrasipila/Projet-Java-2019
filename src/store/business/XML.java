@@ -14,20 +14,31 @@ import java.util.LinkedList;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
-public class XMLDemo {
+
+/**
+* <h1> Object XML </h1>
+* This class refers ours XML file.
+* It contains all of our method to parse, create and use xml data
+* @since   10-01-2020
+*/
+
+public class XML {
 	private TransformerFactory     transformerFactory;
 	private Transformer            transformer;
 	private DocumentBuilderFactory documentFactory;
 	private DocumentBuilder        documentBuilder;
 	private LocalDateTime          ldt;
-    
-    
+
+
 	private static String XML_PRODUCTS      = "files/produits.xml";
 	private static String XML_CLIENTS       = "files/clients.xml";
 	private static String XML_TRANSACTIONS  = "files/transactions.xml";
 	private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
-	public XMLDemo() {
+	/**
+     * This constructor initialises the tool to use for xml parsing / creating.
+     */
+	public XML() {
 		try {
 			transformerFactory = TransformerFactory.newInstance();
 			transformer        = transformerFactory.newTransformer();
@@ -40,13 +51,18 @@ public class XMLDemo {
         }
 	}
 
+	/**
+	* This method return the XMLFile parse
+	* @param String This is the file path
+	* @return parse XML --> NodeList format
+	*/
 	public NodeList parseXMLFile (String filePath) {
 		NodeList elementNodes = null;
 		try {
 			Document document= documentBuilder.parse(new File(filePath));
 			Element root = document.getDocumentElement();
-			
-			elementNodes = root.getChildNodes();	
+
+			elementNodes = root.getChildNodes();
 		}
 		catch (SAXException e) {
 			e.printStackTrace();
@@ -57,12 +73,19 @@ public class XMLDemo {
 		return elementNodes;
 	}
 
+	/**
+	* This method create the XMLDocument
+	* @return The new document
+	*/
 	public Document createXMLDocument() {
 		return documentBuilder.newDocument();
-	}	
+	}
 
+	/**
+	* This method create dynamicaly the categories from the XML file
+	* @return List<String> the list of categories
+	*/
 	public List<String> getCategories(){
-
 		NodeList nodes = this.parseXMLFile(XML_PRODUCTS);
 		/*On récupère la première itération de tous
 		les noms des items stockés dans nodes
@@ -79,6 +102,11 @@ public class XMLDemo {
 		// Si l'element courant (currentElement) n'est pas présent dans le tableau alors on l'ajoute !pasfait!
 	}
 
+	/**
+	* This method create the XMLFile
+	* @param document This is the document wich is create with createXMLDocument()
+	* @param filePath This is the file path for the new XMLFile
+	*/
 	public void createXMLFile(Document document, String filePath) {
 		try {
 			DOMSource domSource = new DOMSource(document);
@@ -90,6 +118,11 @@ public class XMLDemo {
 		System.out.println("Done creating XML File");
 	}
 
+	/**
+	* This method parse a book with it features
+	* @param currentElement current element when the xml file is parsing
+	* @return Book book
+	*/
 	public Book parseLivre(Element currentElement) {
 		Book book = new Book("sans nom", 0.0, UUID.randomUUID(), 0, "/", "Personne", 0, "French");
 		try {
@@ -112,6 +145,9 @@ public class XMLDemo {
 		return book;
 	}
 
+	/**
+	* This method
+	*/
 	public DVD parseDVD(Element currentElement) {
 		Vector<String> actorsVect = new Vector<String>();
 		actorsVect.add(" ");
@@ -138,7 +174,7 @@ public class XMLDemo {
 			System.out.println("Something is wrong with the XML client DVD element");
 			System.out.println("Problem is : " + ex.getMessage());
 		}
-		
+
 		return dvd;
 	}
 
@@ -155,19 +191,19 @@ public class XMLDemo {
 			String stock      = currentElement.getElementsByTagName("stock").item(0).getTextContent();
 			String image      = currentElement.getElementsByTagName("image").item(0).getTextContent();
 			UUID   uniqueID   = UUID.fromString(identifier);
-			
+
 			platformVect = new Vector<String>();
 			String[] allPlatform = platform.split(", ");
 			for (String var : allPlatform) platformVect.add(var);
-			
+
 			game = new Game(nom_jeu, Double.valueOf(price), uniqueID, Integer.valueOf(stock), image, genre, platformVect);
 			// game.printProduct();
-			
+
 		} catch(Exception ex) {
 			System.out.println("Something is wrong with the XML client game element");
 			System.out.println("Problem is : " + ex.getMessage());
 		}
-		
+
 		return game;
 	}
 
@@ -177,7 +213,7 @@ public class XMLDemo {
 
 		NodeList nodes = this.parseXMLFile(XML_PRODUCTS);
 		if (nodes == null) return null;
-		
+
 		for (int i = 0; i<nodes.getLength(); i++) {
 			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE)   {
 				Element currentElement = (Element) nodes.item(i);
@@ -190,17 +226,17 @@ public class XMLDemo {
 					if (currentElement.getNodeName().equals("Livres")   && category == "Livres") {
 						currentProduct = parseLivre(currentElement);
 						allProducts.add(currentProduct);
-					} 
+					}
 					else if (currentElement.getNodeName().equals("DVDs") && category == "DVDs")   {
 						currentProduct = parseDVD(currentElement);
 						allProducts.add(currentProduct);
-					} 
+					}
 					else if (currentElement.getNodeName().equals("Jeux") && category == "Jeux")  {
 						currentProduct = parseGame(currentElement);
 						allProducts.add(currentProduct);
-					} 
+					}
 				}
-			}  
+			}
 		}
 
 		return allProducts;
@@ -236,7 +272,7 @@ public class XMLDemo {
 				price.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getPrice())));
 				book.appendChild(price);
 				Element stock = document.createElement("stock");
-				if (p.getId() == b.getId()) stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock() - nbUnits)));
+				if (p.getId().toString().equals(b.getId().toString())) stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock() - nbUnits)));
 				else stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock())));
 				book.appendChild(stock);
 				Element image = document.createElement("image");
@@ -265,7 +301,7 @@ public class XMLDemo {
 				price.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getPrice())));
 				dvd.appendChild(price);
 				Element stock = document.createElement("stock");
-				if (p.getId() == d.getId()) stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock() - nbUnits)));
+				if (p.getId().toString().equals(d.getId().toString())) stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock() - nbUnits)));
 				else stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock())));
 				dvd.appendChild(stock);
 				Element image = document.createElement("image");
@@ -295,7 +331,7 @@ public class XMLDemo {
 				System.out.println("g : " + g.getId());
 				if (p.getId().toString().equals(g.getId().toString())) stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock() - nbUnits)));
 				else stock.appendChild(document.createTextNode(String.valueOf(allProducts.get(i).getStock())));
-				
+
 				game.appendChild(stock);
 				Element image = document.createElement("image");
 				image.appendChild(document.createTextNode(allProducts.get(i).getImage()));
@@ -303,9 +339,9 @@ public class XMLDemo {
 				root.appendChild(game);
 			}
 		}
-		
+
 		this.createXMLFile(document, XML_PRODUCTS);
-	} 
+	}
 
 	public Client parseClient(Element currentElement) {
 		Client client = new Client("Prénom", "Nom", "example@example.com", UUID.randomUUID());
@@ -314,13 +350,13 @@ public class XMLDemo {
 			String lastname  = currentElement.getElementsByTagName("lastname").item(0).getTextContent();
 			String email     = currentElement.getElementsByTagName("email").item(0).getTextContent();
 			UUID   uniqueID  = UUID.fromString(currentElement.getElementsByTagName("uniqueID").item(0).getTextContent());
-			
+
 			client = new Client(firstname, lastname, email, uniqueID);
 		} catch(Exception ex) {
 			System.out.println("Something is wrong with the XML client element");
 			System.out.println("Problem is : " + ex.getMessage());
 		}
-		
+
 		return client;
 	}
 
@@ -330,13 +366,13 @@ public class XMLDemo {
 
 		NodeList nodes = this.parseXMLFile(XML_CLIENTS);
 		if (nodes == null) return null;
-		
+
 		for (int i = 0; i<nodes.getLength(); i++) {
 			if (nodes.item(i).getNodeType() == Node.ELEMENT_NODE)   {
 				Element currentElement = (Element) nodes.item(i);
 				currentClient = parseClient(currentElement);
 				allClients.add(currentClient);
-			}  
+			}
 		}
 
 		return allClients;
@@ -389,7 +425,7 @@ public class XMLDemo {
 			client.appendChild(emailElement);
 			root.appendChild(client);
 		}
-		
+
 		this.createXMLFile(document, XML_CLIENTS);
 	}
 
@@ -409,7 +445,7 @@ public class XMLDemo {
 			System.out.println("Something is wrong with the XML transaction element");
 			System.out.println("Problem is : " + ex.getMessage());
 		}
-		
+
 		return transaction;
 	}
 
@@ -424,20 +460,20 @@ public class XMLDemo {
 				Element currentElement = (Element) nodes.item(i);
 				currentTransaction = parseTransaction(currentElement);
 				allTransactions.add(currentTransaction);
-			}  
+			}
 		}
-		
+
 		return allTransactions;
 	}
-	
-	
+
+
 	public void addTransaction(Transaction t) {
 		Document document = this.createXMLDocument();
 		if (document == null) return;
-		
+
 		Element root = document.createElement("transactions");
 		document.appendChild(root);
-		
+
 		Element transaction = document.createElement("transaction");
 		Element clientID = document.createElement("clientId");
 		clientID.appendChild(document.createTextNode(t.getClientId().toString()));
@@ -471,7 +507,7 @@ public class XMLDemo {
 			transaction.appendChild(time);
 			root.appendChild(transaction);
 		}
-		
+
 		this.createXMLFile(document, XML_TRANSACTIONS);
 	}
 }

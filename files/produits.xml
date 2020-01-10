@@ -37,7 +37,7 @@
         <duration>98</duration>
         <genre>Science-Fiction</genre>
         <price>10.0</price>
-        <stock>62</stock>
+        <stock>50</stock>
         <image>/bin/usr/Desktop</image>
     </DVDs>
     <DVDs>
@@ -47,7 +47,7 @@
         <duration>178</duration>
         <genre>Fantasy</genre>
         <price>12.9</price>
-        <stock>25</stock>
+        <stock>20</stock>
         <image>/bin/usr/Desktop</image>
     </DVDs>
     <DVDs>
@@ -66,7 +66,7 @@
         <genre>Action-Aventure</genre>
         <platform>Pc, Xbox One, PS4</platform>
         <price>64.99</price>
-        <stock>51</stock>
+        <stock>40</stock>
         <image>/bin/usr/Desktop</image>
     </Jeux>
     <Jeux>

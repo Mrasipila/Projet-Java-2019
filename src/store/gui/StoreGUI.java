@@ -91,8 +91,6 @@ public class StoreGUI implements ActionListener {
 
         JPanel searchPanel = new JPanel(new BorderLayout());    // Panneau qui contient la définition du choix du produit
         JLabel titleSearch = new JLabel("Catégorie Produit");   // titre
-        // String[] categories = {"Tous", "DVDs", "Livres", "Jeux Vidéo"};
-        // searchProduct      = new JComboBox<>(categories);         // input
 
         List<String> catl = store.getCategories();
         Object[] objectArray = catl.toArray();
@@ -118,8 +116,9 @@ public class StoreGUI implements ActionListener {
         infoProductsPanel = new JPanel(new BorderLayout());  // Panneau qui contient la list des produits
         listModel         = new DefaultListModel<String>();
         store.updateProducts(searchProduct.getSelectedItem().toString());
-        for (int i = 0; i < store.getProducts().size(); i++) 
+        for (int i = 0; i < store.getProducts().size(); i++)
             listModel.addElement(store.getProducts().get(i).getName());
+
         currentProductName = store.getProducts().get(0).getName();
         listProducts = new JList<String>(listModel);
         listProducts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -312,8 +311,11 @@ public class StoreGUI implements ActionListener {
                     System.out.println("add client");
                     System.out.println("Prénom : " + searchNameClient.getText());
                     System.out.println("Nom    : " + searchSurnameClient.getText());
-                    System.out.println("Email  : " + searchEmailClient.getText());    
-                    store.addClient(searchNameClient.getText(), searchSurnameClient.getText(), searchEmailClient.getText());
+                    System.out.println("Email  : " + searchEmailClient.getText());
+                    if (searchNameClient.getText().length() > 0 && searchSurnameClient.getText().length() > 0 && searchEmailClient.getText().length() > 0)
+                        store.addClient(searchNameClient.getText(), searchSurnameClient.getText(), searchEmailClient.getText());
+                    else 
+                        addClientBtn.setEnabled(false);
                     break;
 
                 case "buyProducts":
@@ -334,17 +336,10 @@ public class StoreGUI implements ActionListener {
 
     private void updateProductsList() {
         infoProductsPanel.removeAll();
-        // listModel.clear();
         listModel = new DefaultListModel<String>();
-        // listProducts.clearSelection();
-        // listScroll.removeAll();
-        // listModel.clear();
-        // for (int i = 0; i < listModel.getSize(); i++) 
-        // listModel.removeAllElements();
         store.updateProducts(searchProduct.getSelectedItem().toString());
         for (int i = 0; i < store.getProducts().size(); i++) 
             listModel.addElement(store.getProducts().get(i).getName());
-        // listModel.removeElementAt(0);
         listProducts = new JList<String>(listModel);
         listProducts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         listProducts.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -393,7 +388,7 @@ public class StoreGUI implements ActionListener {
         currentProduct.printProduct();
 
         for (int i = 0; i < currentProduct.getStock(); i++) nb.add(String.valueOf(i+1));
-        number = new String[nb.size()];
+        number        = new String[nb.size()];
         for (int i = 0; i < number.length; i++) number[i] = nb.get(i);
         numberProduct = new JComboBox<>(number);
         tmp           = new JPanel(new FlowLayout());

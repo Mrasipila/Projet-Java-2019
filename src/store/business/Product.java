@@ -25,35 +25,35 @@ public class Product {
     }
 
     /**
-    * This is the method an abstract method that gets you the name of the product
+    * This is the method that gets you the name of the product
     */
     public String getName() {
         return name;
     }
 
     /**
-    * This is the method an abstract method that gets you the name of the price
+    * This is the method that gets you the name of the price
     */
     public double getPrice() {
         return price;
     }
 
     /**
-    * This is the method an abstract method that gets you the name of the id
+    * This is the method that gets you the name of the id
     */
     public UUID getId() {
         return identifier;
     }
 
     /**
-    * This is the method an abstract method that gets you the name of the stock
+    * This is the method that gets you the name of the stock
     */
     public int getStock() {
         return stock;
     }
 
     /**
-    * This is the method an abstract method that gets you the name of the image
+    * This is the method that gets you the name of the image
     */
     public String getImage() {
         return image;
@@ -66,5 +66,8 @@ public class Product {
         stock = stock - n;
     }
 
+    /**
+    * This is the method a method that print product feature
+    */
     public void printProduct() {}
 }
